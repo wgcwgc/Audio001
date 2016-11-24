@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.runcom.wgcwgc.audio.R;
+import com.runcom.wgcwgc.audio01.R;
 
 public class Recorder extends Activity
 {

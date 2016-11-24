@@ -17,6 +17,7 @@
 package com.runcom.wgcwgc.record_wavelibrary_view;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,7 +26,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.runcom.wgcwgc.audio.R;
+import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.record_wavelibrary_utils.SoundFile;
 
 /**
@@ -95,6 +96,7 @@ public class WaveformView extends View
 		this.line_offset = line_offset;
 	}
 
+	@TargetApi(23)
 	public WaveformView(Context context , AttributeSet attrs)
 	{
 		super(context , attrs);

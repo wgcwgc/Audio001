@@ -17,8 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,10 +29,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.runcom.wgcwgc.audio.R;
+import com.runcom.wgcwgc.audio01.R;
 
 @SuppressLint("HandlerLeak")
-public class Control extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnItemClickListener , OnSeekBarChangeListener
+public class Play extends Activity implements Runnable , OnCompletionListener , OnItemClickListener , OnErrorListener , OnSeekBarChangeListener
 {
 	protected static final int SEARCH_MUSIC_SUCCESS = 0;// 搜索成功标记
 	private SeekBar seekBar;
@@ -65,28 +63,46 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 	protected void onCreate(Bundle savedInstanceState )
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.control_main);
+		setContentView(R.layout.audio_play);
 
 		mp = new MediaPlayer();
 		mp.setOnCompletionListener(this);
 		mp.setOnErrorListener(this);
 
 		initPlayView();
+		// TODO
+		play_list.clear();
+		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+		{
+			pd = ProgressDialog.show(Play.this ,"搜索" ,"正在搜索音乐文件..." ,true);
+			new Thread(new Runnable()
+			{
+				public void run()
+				{
+					search(file ,ext);
+					hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
+				}
+			}).start();
+
+		}
+		else
+		{
+			Toast.makeText(Play.this ,"请插入外部存储设备..." ,Toast.LENGTH_LONG).show();
+			System.out.println(Environment.getExternalStorageDirectory().toString());
+		}
 	}
 
 	private void initPlayView()
 	{
-		btnPlay = (ImageButton) findViewById(R.id.media_play_control_main);
-		seekBar = (SeekBar) findViewById(R.id.seekBar_control_main);
+		btnPlay = (ImageButton) findViewById(R.id.media_play);
+		seekBar = (SeekBar) findViewById(R.id.seekBar1);
 		seekBar.setOnSeekBarChangeListener(this);
-		listView = (ListView) findViewById(R.id.control_main_listView);
+		listView = (ListView) findViewById(R.id.main_listView);
 		listView.setOnItemClickListener(this);
-		tv_currTime = (TextView) findViewById(R.id.textView1_curr_time_control_main);
-		tv_totalTime = (TextView) findViewById(R.id.textView1_total_time_control_main);
-		tv_showName = (TextView) findViewById(R.id.tv_showName_control_main);
+		tv_currTime = (TextView) findViewById(R.id.textView1_curr_time);
+		tv_totalTime = (TextView) findViewById(R.id.textView1_total_time);
+		tv_showName = (TextView) findViewById(R.id.tv_showName);
 
-		// search(file ,ext);
-		// hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
 	}
 
 	public Handler hander = new Handler()
@@ -99,7 +115,6 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 					// 搜索音乐文件结束
 					ma = new MusicListAdapter();
 					listView.setAdapter(ma);
-					// listView01.setAdapter(ma);
 					pd.dismiss();
 					break;
 				case CURR_TIME_VALUE:
@@ -119,7 +134,6 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 		{
 			if(file.isDirectory())
 			{
-				// System.out.println("2:" + file.toString());
 				File [] listFile = file.listFiles();
 				if(listFile != null)
 				{
@@ -136,9 +150,7 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 				{
 					if(filename.endsWith(ext[i]))
 					{
-						// list.add(filename.substring(filename.lastIndexOf("/")));
 						play_list.add(filename);
-						// System.out.println("3:" + filename);
 						break;
 					}
 				}
@@ -174,10 +186,7 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 			TextView tv_music_name = (TextView) convertView.findViewById(R.id.textView1_music_name);
 			String name = play_list.get(position).toString();
 			name = name.substring(name.lastIndexOf("/") + 1);
-			// tv_music_name.setText(list.get(position));
 			tv_music_name.setText(name);
-			// Toast.makeText(MainActivity.this ,"搜索完成"
-			// ,Toast.LENGTH_SHORT).show();
 			return convertView;
 		}
 
@@ -213,11 +222,11 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 		else
 			if(play_list.size() <= 0)
 			{
-				Toast.makeText(Control.this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
+				Toast.makeText(this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				Toast.makeText(Control.this ,"当前已经是第一首歌曲了" ,Toast.LENGTH_SHORT).show();
+				Toast.makeText(this ,"当前已经是第一首歌曲了" ,Toast.LENGTH_SHORT).show();
 			}
 	}
 
@@ -232,15 +241,11 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 		else
 			if(currIndex == play_list.size())
 			{
-				Toast.makeText(Control.this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
+				Toast.makeText(this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				tv_showName.setText("");
-				btnPlay.setImageResource(R.drawable.ic_media_play);
-				tv_currTime.setText("00:00");
-				tv_totalTime.setText("00:00");
-				Toast.makeText(Control.this ,"当前已经是最后一首歌曲了" ,Toast.LENGTH_SHORT).show();
+				Toast.makeText(this ,"当前已经是最后一首歌曲了" ,Toast.LENGTH_SHORT).show();
 			}
 	}
 
@@ -269,24 +274,24 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 		}
 		else
 		{
-			Toast.makeText(Control.this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
+			Toast.makeText(this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	// 播放按钮
-	public void playLocalAudio(View v )
+	public void play(View v )
 	{
 		play();
 	}
 
 	// 上一首按钮
-	public void previousLocalAudio(View v )
+	public void previous(View v )
 	{
 		previous();
 	}
 
 	// 下一首按钮
-	public void nextLocalAudio(View v )
+	public void next(View v )
 	{
 		next();
 	}
@@ -301,7 +306,7 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 		else
 		{
 			tv_showName.setText("");
-			Toast.makeText(Control.this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
+			Toast.makeText(this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -351,7 +356,7 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 				hander.sendMessage(msg);
 				try
 				{
-					Thread.sleep(500);
+					Thread.sleep(1000);
 				}
 				catch(InterruptedException e)
 				{
@@ -388,65 +393,6 @@ public class Control extends Activity implements Runnable , OnCompletionListener
 	{
 		currIndex = position;
 		start();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu )
-	{
-		getMenuInflater().inflate(R.menu.audio_menu_local ,menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item )
-	{
-		switch(item.getItemId())
-		{
-		// 搜索本地音乐菜单
-			case R.id.item_search:
-				play_list.clear();
-				// 是否有外部存储设备
-				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-				{
-					pd = ProgressDialog.show(Control.this ,"搜索" ,"正在搜索音乐文件..." ,true);
-					// Toast.makeText(this ,"正在搜索音乐文件"
-					// ,Toast.LENGTH_LONG).show();
-					new Thread(new Runnable()
-					{
-						// String [] ext =
-						// { ".mp3", ".wav" };
-						// File file =
-						// Environment.getExternalStorageDirectory();// sd卡根目录
-
-						public void run()
-						{
-							search(file ,ext);
-							hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
-						}
-					}).start();
-
-				}
-				else
-				{
-					Toast.makeText(Control.this ,"请插入外部存储设备..." ,Toast.LENGTH_LONG).show();
-					System.out.println(Environment.getExternalStorageDirectory().toString());
-				}
-
-				break;
-			// 清除播放列表菜单
-			case R.id.item_clear:
-				if(play_list.isEmpty())
-				{
-
-				}
-				else
-				{
-					play_list.clear();
-					ma.notifyDataSetChanged();
-				}
-				break;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 }

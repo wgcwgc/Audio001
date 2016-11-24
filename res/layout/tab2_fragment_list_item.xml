@@ -2,15 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <ListView
-        android:id="@+id/fragment_tab1_listView"
-        android:layout_width="fill_parent"
+    android:orientation="horizontal" >
+    
+    <TextView
+        android:id="@+id/tab2_fragment_list_item_name"
+        android:layout_width="333dp"  
         android:layout_height="wrap_content"
-        android:background="#B3A981" >
-
-    </ListView>
-
+        android:textSize="37sp"
+        android:text="TextView" />  
 
 </LinearLayout>

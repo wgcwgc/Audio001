@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+     <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout1"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_alignStart="@+id/linearLayout1"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/textView1_curr_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/main_audio_curr_time" />
+
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textView1_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:text="@string/main_audio_total_time" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/main_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="57dp"
+        android:layout_above="@+id/tv_showName"
+        android:layout_alignParentTop="true"
+        android:background="#B8B8B8"
+        android:singleLine="true" >
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/tv_showName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_alignStart="@+id/linearLayout2"
+        android:gravity="center"
+        android:text="@string/hello_world" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/main_listView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/main_listView"
+        android:gravity="center" >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/main_audio_previous"
+            android:onClick="previous"
+            android:src="@drawable/ic_media_previous" />
+
+        <ImageButton
+            android:id="@+id/media_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/main_audio_play"
+            android:onClick="play"
+            android:src="@drawable/ic_media_play" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/main_audio_next"
+            android:onClick="next"
+            android:src="@drawable/ic_media_next" />
+    </LinearLayout>
+
+</RelativeLayout>

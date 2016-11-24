@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.runcom.wgcwgc.audio"
+    package="com.runcom.wgcwgc.audio01"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="24" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -41,14 +41,17 @@
         <service android:name="com.runcom.wgcwgc.recordServer.MyService" >
         </service>
 
-        <activity android:name="com.runcom.wgcwgc.record.Mainactivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+        <activity
+            android:name="com.runcom.wgcwgc.record.MyRecord"
+            android:icon="@drawable/ic_launcher"
+            android:parentActivityName="com.runcom.wgcwgc.audio.MainActivity" >
         </activity>
-        <activity android:name="com.runcom.wgcwgc.play.Control" >
+        <activity
+            android:name="com.runcom.wgcwgc.play.PlayLocaleAudio"
+            android:icon="@drawable/ic_launcher"
+            android:parentActivityName="com.runcom.wgcwgc.audio.MainActivity" >
+        </activity>
+        <activity android:name="com.runcom.wgcwgc.play.Play" >
         </activity>
     </application>
 

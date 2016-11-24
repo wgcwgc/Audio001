@@ -1,9 +1,11 @@
 package com.runcom.wgcwgc.record;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -15,13 +17,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.runcom.wgcwgc.audio.R;
+import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.record_draw.WaveCanvas;
 import com.runcom.wgcwgc.record_util.U;
 import com.runcom.wgcwgc.record_wavelibrary_utils.SamplePlayer;
@@ -29,7 +34,7 @@ import com.runcom.wgcwgc.record_wavelibrary_utils.SoundFile;
 import com.runcom.wgcwgc.record_wavelibrary_view.WaveSurfaceView;
 import com.runcom.wgcwgc.record_wavelibrary_view.WaveformView;
 
-public class Mainactivity extends Activity
+public class MyRecord extends Activity
 {
 
 	private static final int FREQUENCY = 16000;// 设置音频采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
@@ -53,11 +58,22 @@ public class Mainactivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
-		setContentView(R.layout.recorder_main);
+		setContentView(com.runcom.wgcwgc.audio01.R.layout.recorder_main);
+
+		ActionBar actionbar = getActionBar();
+		// 显示返回箭头默认是不显示的
+		actionbar.setDisplayHomeAsUpEnabled(false);
+		// 显示左侧的返回箭头，并且返回箭头和title一起设置，返回箭头才能显示
+		actionbar.setDisplayShowHomeEnabled(true);
+		actionbar.setDisplayUseLogoEnabled(true);
+		// 显示标题
+		actionbar.setDisplayShowTitleEnabled(true);
+		actionbar.setDisplayShowCustomEnabled(true);
+		actionbar.setTitle(" 录音 ");
 
 		waveSfv = (WaveSurfaceView) findViewById(R.id.wavesfv);
 		switchButton = (Button) findViewById(R.id.switchButton);
-		status = (TextView) findViewById(R.id.status);
+		status = (TextView) findViewById(com.runcom.wgcwgc.audio01.R.id.status);
 		waveView = (WaveformView) findViewById(R.id.waveview);
 		playButton = (Button) findViewById(R.id.play);
 		shareButton = (Button) findViewById(R.id.shareAudio);
@@ -193,7 +209,7 @@ public class Mainactivity extends Activity
 							waveView.setVisibility(View.VISIBLE);
 						}
 					};
-					Mainactivity.this.runOnUiThread(runnable);
+					MyRecord.this.runOnUiThread(runnable);
 				}
 			}
 		};
@@ -306,6 +322,50 @@ public class Mainactivity extends Activity
 			waveView.setPlayFinish(0);
 		}
 		waveView.invalidate();// 刷新真个视图
+	}
+
+	@Override
+	public boolean onMenuOpened(int featureId , Menu menu )
+	{
+
+		if(featureId == Window.FEATURE_ACTION_BAR && menu != null)
+		{
+			if(menu.getClass().getSimpleName().equals("MenuBuilder"))
+			{
+				try
+				{
+					Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible" ,Boolean.TYPE);
+					m.setAccessible(true);
+					m.invoke(menu ,true);
+				}
+				catch(Exception e)
+				{
+					Toast.makeText(this ,"overflow 展开显示item图标异常" ,Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+
+		return super.onMenuOpened(featureId ,menu);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu )
+	{
+		// getMenuInflater().inflate(R.menu.main ,menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item )
+	{
+		switch(item.getItemId())
+		{
+			case android.R.id.home:
+				onBackPressed();
+				break;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 }
