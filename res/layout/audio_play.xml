@@ -7,7 +7,7 @@
     <ListView
         android:id="@+id/main_listView"
         android:layout_width="wrap_content"
-        android:layout_height="120dp"
+        android:layout_height="128dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -16,6 +16,18 @@
         android:background="#B8B8B8"
         android:singleLine="true" >
     </ListView>
+
+    <com.runcom.wgcwgc.audioBean.LyricView
+        android:id="@+id/LyricShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_showName"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/main_listView"
+        android:background="#969696" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -88,17 +100,5 @@
             android:onClick="next"
             android:src="@drawable/ic_media_next" />
     </LinearLayout>
-
-    <com.runcom.wgcwgc.audioBean.LyricView
-        android:id="@+id/LyricShow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_showName"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/main_listView"
-        android:background="#969696" />
 
 </RelativeLayout>

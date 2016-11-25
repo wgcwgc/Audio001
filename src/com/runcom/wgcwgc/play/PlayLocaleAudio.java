@@ -315,6 +315,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 		else
 		{
 			tv_showName.setText("");
+			tv_currTime.setText("00:00");
 			Toast.makeText(PlayLocaleAudio.this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 		}
 	}

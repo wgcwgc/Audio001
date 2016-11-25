@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,8 +68,8 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	// 定义线程池（同时只能有一个线程运行）
 	ExecutorService es = Executors.newSingleThreadExecutor();
 
-	Intent intent;
-	String source , contents;
+	private Intent intent;
+	private String source , contents;
 
 	// 歌词处理
 	private LrcRead mLrcRead;
@@ -102,7 +103,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		mp = new MediaPlayer();
 		mp.setOnCompletionListener(this);
 		mp.setOnErrorListener(this);
-		mp.setLooping(true);
+//		mp.setLooping(true);
 
 		initPlayView();
 		// TODO
@@ -191,7 +192,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		tv_showName = (TextView) findViewById(R.id.tv_showName);
 		source = file.toString() + "/&abc_record/";
 
-		Toast.makeText(this ,source ,Toast.LENGTH_SHORT).show();
+		Toast.makeText(this ,source + "\n" + contents + "\n" ,Toast.LENGTH_SHORT).show();
 		play_list.add(source + "test.wav");
 		play_list.add(source + "许嵩_雅俗共赏.mp3");
 		hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
@@ -340,6 +341,10 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 			}
 			else
 			{
+				tv_showName.setText("");
+				btnPlay.setImageResource(R.drawable.ic_media_play);
+				tv_currTime.setText("00:00");
+				tv_totalTime.setText("00:00");
 				Toast.makeText(this ,"当前已经是最后一首歌曲了" ,Toast.LENGTH_SHORT).show();
 			}
 	}
@@ -402,6 +407,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		else
 		{
 			tv_showName.setText("");
+			tv_currTime.setText("00:00");
 			Toast.makeText(this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -532,6 +538,19 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	// 重写按返回键退出播放
+	@Override
+	public boolean onKeyDown(int keyCode , KeyEvent event )
+	{
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+		{
+			mp.stop();
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode ,event);
 	}
 
 }
