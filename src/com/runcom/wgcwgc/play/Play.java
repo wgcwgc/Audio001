@@ -2,14 +2,16 @@ package com.runcom.wgcwgc.play;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
@@ -17,8 +19,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -30,6 +35,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runcom.wgcwgc.audio01.R;
+import com.runcom.wgcwgc.audioBean.LrcRead;
+import com.runcom.wgcwgc.audioBean.LyricContent;
+import com.runcom.wgcwgc.audioBean.LyricView;
 
 @SuppressLint("HandlerLeak")
 public class Play extends Activity implements Runnable , OnCompletionListener , OnItemClickListener , OnErrorListener , OnSeekBarChangeListener
@@ -43,7 +51,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	String [] ext =
 	{ ".mp3", ".wav" };
 	File file = Environment.getExternalStorageDirectory();// sd卡根目录
-	private ProgressDialog pd; // 进度条对话框
+	// private ProgressDialog pd; // 进度条对话框
 	private MusicListAdapter ma;// 适配器
 	private MediaPlayer mp;
 	private int currIndex = 0;// 表示当前播放的音乐索引
@@ -59,37 +67,116 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	// 定义线程池（同时只能有一个线程运行）
 	ExecutorService es = Executors.newSingleThreadExecutor();
 
+	Intent intent;
+	String source , contents;
+
+	// 歌词处理
+	private LrcRead mLrcRead;
+	private LyricView mLyricView;
+	private int index = 0;
+	private int CurrentTime = 0;
+	private int CountTime = 0;
+	private List < LyricContent > LyricList = new ArrayList < LyricContent >();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.audio_play);
 
+		intent = getIntent();
+		contents = intent.getStringExtra("contents");
+		source = intent.getStringExtra("source");
+
+		ActionBar actionbar = getActionBar();
+		// 显示返回箭头默认是不显示的
+		actionbar.setDisplayHomeAsUpEnabled(false);
+		// 显示左侧的返回箭头，并且返回箭头和title一起设置，返回箭头才能显示
+		actionbar.setDisplayShowHomeEnabled(true);
+		actionbar.setDisplayUseLogoEnabled(true);
+		// 显示标题
+		actionbar.setDisplayShowTitleEnabled(true);
+		actionbar.setDisplayShowCustomEnabled(true);
+		actionbar.setTitle(" 播放 ");
+
 		mp = new MediaPlayer();
 		mp.setOnCompletionListener(this);
 		mp.setOnErrorListener(this);
+		mp.setLooping(true);
 
 		initPlayView();
 		// TODO
-		play_list.clear();
-		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-		{
-			pd = ProgressDialog.show(Play.this ,"搜索" ,"正在搜索音乐文件..." ,true);
-			new Thread(new Runnable()
-			{
-				public void run()
-				{
-					search(file ,ext);
-					hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
-				}
-			}).start();
 
-		}
-		else
+	}
+
+	private void initLyric()
+	{
+		mLrcRead = new LrcRead();
+		mLyricView = (LyricView) findViewById(R.id.LyricShow);
+
+		try
 		{
-			Toast.makeText(Play.this ,"请插入外部存储设备..." ,Toast.LENGTH_LONG).show();
-			System.out.println(Environment.getExternalStorageDirectory().toString());
+			mLrcRead.Read(Environment.getExternalStorageDirectory().toString() + "/&abc_record/许嵩_雅俗共赏.lrc");
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		LyricList = mLrcRead.GetLyricContent();
+		// 设置歌词资源
+		mLyricView.setSentenceEntities(LyricList);
+		mHandler.post(mRunnable);
+		for(int i = 0 ; i < mLrcRead.GetLyricContent().size() ; i ++ )
+		{
+			System.out.println(mLrcRead.GetLyricContent().get(i).getLyricTime() + "-");
+			System.out.println(mLrcRead.GetLyricContent().get(i).getLyric() + "----");
+		}
+
+	}
+
+	Handler mHandler = new Handler();
+
+	Runnable mRunnable = new Runnable()
+	{
+		public void run()
+		{
+			mLyricView.SetIndex(Index());
+			mLyricView.invalidate();
+			mHandler.postDelayed(mRunnable ,100);
+		}
+	};
+
+	public int Index()
+	{
+		if(mp.isPlaying())
+		{
+			CurrentTime = mp.getCurrentPosition();
+			CountTime = mp.getDuration();
+		}
+		if(CurrentTime < CountTime)
+		{
+			for(int i = 0 ; i < LyricList.size() ; i ++ )
+			{
+				if(i < LyricList.size() - 1)
+				{
+					if(CurrentTime < LyricList.get(i).getLyricTime() && i == 0)
+					{
+						index = i;
+					}
+					if(CurrentTime > LyricList.get(i).getLyricTime() && CurrentTime < LyricList.get(i + 1).getLyricTime())
+					{
+						index = i;
+					}
+				}
+
+				if(i == LyricList.size() - 1 && CurrentTime > LyricList.get(i).getLyricTime())
+				{
+					index = i;
+				}
+			}
+		}
+
+		return index;
 	}
 
 	private void initPlayView()
@@ -102,7 +189,14 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		tv_currTime = (TextView) findViewById(R.id.textView1_curr_time);
 		tv_totalTime = (TextView) findViewById(R.id.textView1_total_time);
 		tv_showName = (TextView) findViewById(R.id.tv_showName);
+		source = file.toString() + "/&abc_record/";
 
+		Toast.makeText(this ,source ,Toast.LENGTH_SHORT).show();
+		play_list.add(source + "test.wav");
+		play_list.add(source + "许嵩_雅俗共赏.mp3");
+		hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
+		initLyric();
+		start();
 	}
 
 	public Handler hander = new Handler()
@@ -115,7 +209,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 					// 搜索音乐文件结束
 					ma = new MusicListAdapter();
 					listView.setAdapter(ma);
-					pd.dismiss();
+					// pd.dismiss();
 					break;
 				case CURR_TIME_VALUE:
 					// 设置当前时间
@@ -128,6 +222,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	};
 
 	// 搜索音乐文件
+	@SuppressWarnings("unused")
 	private void search(File file , String [] ext )
 	{
 		if(file != null)
@@ -258,6 +353,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 			mp.reset();
 			try
 			{
+				// TODO
 				mp.setDataSource(SongPath);
 				mp.prepare();
 				mp.start();
@@ -393,6 +489,49 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	{
 		currIndex = position;
 		start();
+	}
+
+	@Override
+	public boolean onMenuOpened(int featureId , Menu menu )
+	{
+
+		if(featureId == Window.FEATURE_ACTION_BAR && menu != null)
+		{
+			if(menu.getClass().getSimpleName().equals("MenuBuilder"))
+			{
+				try
+				{
+					Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible" ,Boolean.TYPE);
+					m.setAccessible(true);
+					m.invoke(menu ,true);
+				}
+				catch(Exception e)
+				{
+					Toast.makeText(this ,"overflow 展开显示item图标异常" ,Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+
+		return super.onMenuOpened(featureId ,menu);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu )
+	{
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item )
+	{
+		switch(item.getItemId())
+		{
+			case android.R.id.home:
+				mp.stop();
+				onBackPressed();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

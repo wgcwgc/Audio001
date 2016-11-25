@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runcom.wgcwgc.audio01.R;
-import com.runcom.wgcwgc.play.Play;
 import com.runcom.wgcwgc.play.PlayLocaleAudio;
 import com.runcom.wgcwgc.record.MyRecord;
 
@@ -224,8 +223,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 	{
 		Log.d("LOG" ,"first_layout02_onClick");
 		Toast.makeText(this ,"first_layout02_onClick" ,Toast.LENGTH_SHORT).show();
-		// TODO
-		startActivity(new Intent(this , Play.class));
 	}
 
 	public void first_layout03_onClick(View view )

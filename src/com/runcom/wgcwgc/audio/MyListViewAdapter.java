@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
+import com.runcom.wgcwgc.play.Play;
 
 @SuppressLint("InflateParams")
 public class MyListViewAdapter extends BaseAdapter
@@ -23,13 +26,15 @@ public class MyListViewAdapter extends BaseAdapter
 
 	Bundle savedInstanceState;
 	LayoutInflater inflater;
+	Context context;
 
 	public MyListViewAdapter()
 	{
 	}
 
-	public MyListViewAdapter(LayoutInflater inflater , Bundle savedInstanceState)
+	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState)
 	{
+		this.context = context;
 		this.inflater = inflater;
 		this.savedInstanceState = savedInstanceState;
 	}
@@ -78,6 +83,11 @@ public class MyListViewAdapter extends BaseAdapter
 			{
 				// TODO
 				Toast.makeText(inflater.getContext() ,"Äúµã»÷ÁË" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(context , Play.class);
+				String contents = "I am lyric ! \n @autor : @wgcwgc \n @time : @2016.11.25.10:41:57:256 \n contents... \n contents ... \n ... \n . \n end \n";
+				intent.putExtra("contents" , contents);
+				intent.putExtra("source" , audioList.get(position).getSource());
+				context.startActivity(intent);
 			}
 		});
 

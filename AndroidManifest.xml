@@ -51,7 +51,10 @@
             android:icon="@drawable/ic_launcher"
             android:parentActivityName="com.runcom.wgcwgc.audio.MainActivity" >
         </activity>
-        <activity android:name="com.runcom.wgcwgc.play.Play" >
+        <activity
+            android:name="com.runcom.wgcwgc.play.Play"
+            android:icon="@drawable/ic_launcher"
+            android:parentActivityName="com.runcom.wgcwgc.audio.MainActivity" >
         </activity>
     </application>
 
