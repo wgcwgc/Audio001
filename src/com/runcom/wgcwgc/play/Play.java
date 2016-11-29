@@ -13,6 +13,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ import com.runcom.wgcwgc.audioBean.LyricContent;
 import com.runcom.wgcwgc.audioBean.LyricView;
 
 @SuppressLint("HandlerLeak")
-public class Play extends Activity implements Runnable , OnCompletionListener , OnItemClickListener , OnErrorListener , OnSeekBarChangeListener
+public class Play extends Activity implements Runnable , OnCompletionListener , OnItemClickListener , OnErrorListener , OnSeekBarChangeListener , OnBufferingUpdateListener
 {
 	protected static final int SEARCH_MUSIC_SUCCESS = 0;// 搜索成功标记
 	private SeekBar seekBar;
@@ -103,7 +104,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		mp = new MediaPlayer();
 		mp.setOnCompletionListener(this);
 		mp.setOnErrorListener(this);
-//		mp.setLooping(true);
+		// mp.setLooping(true);
 
 		initPlayView();
 		// TODO
@@ -117,7 +118,8 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 		try
 		{
-			mLrcRead.Read(Environment.getExternalStorageDirectory().toString() + "/&abc_record/许嵩_雅俗共赏.lrc");
+			// TODO
+			mLrcRead.Read(Environment.getExternalStorageDirectory().toString() + "/&abc_record/lyrics/许嵩_雅俗共赏.lrc");
 		}
 		catch(Exception e)
 		{
@@ -377,6 +379,18 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		{
 			Toast.makeText(this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	/**
+	 * 缓冲更新
+	 */
+	@Override
+	public void onBufferingUpdate(MediaPlayer mp , int percent )
+	{
+		seekBar.setSecondaryProgress(percent);
+		// int currentProgress = seekBar.getMax() * mp.getCurrentPosition() /
+		// mp.getDuration();
+		// Log.e(currentProgress + "% play" ,percent + " buffer");
 	}
 
 	// 播放按钮

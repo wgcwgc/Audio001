@@ -188,10 +188,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 			TextView tv_music_name = (TextView) convertView.findViewById(R.id.textView1_music_name);
 			String name = play_list.get(position).toString();
 			name = name.substring(name.lastIndexOf("/") + 1);
-			// tv_music_name.setText(list.get(position));
 			tv_music_name.setText(name);
-			// Toast.makeText(MainActivity.this ,"ËÑË÷Íê³É"
-			// ,Toast.LENGTH_SHORT).show();
 			return convertView;
 		}
 

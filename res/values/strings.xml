@@ -27,7 +27,7 @@
     <string name="main_middle_button">中学</string>
 
     <!-- main_audioPlay -->
-    <string name="hello_world"></string>
+    <string name="hello_world">asdf</string>
     <string name="main_audio_play">播放</string>
     <string name="main_audio_next">下一曲</string>
     <string name="main_audio_previous">上一曲</string>

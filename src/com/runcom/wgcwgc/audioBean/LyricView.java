@@ -104,7 +104,6 @@ public class LyricView extends TextView
 		}
 		catch(Exception e)
 		{
-			// TODO: handle exception
 		}
 
 	}
