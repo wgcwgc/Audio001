@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/dian"
+            android:background="@drawable/main_point"
             android:contentDescription="@string/main_viewPager_dian" />
 
         <ImageView
@@ -37,7 +37,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20dip"
             android:layout_marginStart="20dip"
-            android:background="@drawable/dian"
+            android:background="@drawable/main_point"
             android:contentDescription="@string/main_viewPager_dian" />
 
         <ImageView
@@ -46,7 +46,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20dip"
             android:layout_marginStart="20dip"
-            android:background="@drawable/dian"
+            android:background="@drawable/main_point"
             android:contentDescription="@string/main_viewPager_dian" />
     </LinearLayout>
 
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_previous"
             android:onClick="previous"
-            android:src="@drawable/ic_media_previous" />
+            android:src="@drawable/locale_play_media_previous" />
 
         <ImageButton
             android:id="@+id/media_play"
@@ -157,14 +157,14 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_play"
             android:onClick="play"
-            android:src="@drawable/ic_media_play" />
+            android:src="@drawable/locale_play_media_pause" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_next"
             android:onClick="next"
-            android:src="@drawable/ic_media_next" />
+            android:src="@drawable/locale_play_media_next" />
     </LinearLayout>
 
 </RelativeLayout>

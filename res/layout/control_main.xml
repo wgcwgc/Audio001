@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_previous"
             android:onClick="previousLocalAudio"
-            android:src="@drawable/ic_media_previous" />
+            android:src="@drawable/locale_play_media_previous" />
 
         <ImageButton
             android:id="@+id/media_play_control_main"
@@ -33,14 +33,14 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_play"
             android:onClick="playLocalAudio"
-            android:src="@drawable/ic_media_play" />
+            android:src="@drawable/locale_play_media_play" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_next"
             android:onClick="nextLocalAudio"
-            android:src="@drawable/ic_media_next" />
+            android:src="@drawable/locale_play_media_next" />
     </LinearLayout>
 
     <LinearLayout

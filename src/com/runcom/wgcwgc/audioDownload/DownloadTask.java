@@ -13,9 +13,10 @@ public final class DownloadTask implements Runnable
 	private FileDownloader loader;
 	private Context context;
 	private Handler handler;
-	
-	public DownloadTask(Handler handler , Context context , String path , File saveDir)
+	private String filename ;
+	public DownloadTask(String filename , Handler handler , Context context , String path , File saveDir)
 	{
+		this.filename = filename;
 		this.handler = handler;
 		this.path = path;
 		this.saveDir = saveDir;
@@ -40,6 +41,7 @@ public final class DownloadTask implements Runnable
 			if(size == loader.getFileSize())
             {
 				msg.what = 1;
+				msg.getData().putString("filename" , filename);
 				handler.sendMessage(msg);
             }
 		}

@@ -2,6 +2,7 @@ package com.runcom.wgcwgc.audio;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,13 @@ import com.runcom.wgcwgc.audioBean.MyAudio;
 import com.runcom.wgcwgc.audioDownload.DownloadTask;
 import com.runcom.wgcwgc.play.Play;
 
-@SuppressLint("InflateParams") public class MyListViewAdapter extends BaseAdapter
+@SuppressLint("InflateParams")
+public class MyListViewAdapter extends BaseAdapter
 {
 	public static MyAudio myAudio;
 	public static List < MyAudio > audioList;
+
+	final String path = Environment.getExternalStorageDirectory() + "/&abc_record/";
 
 	Bundle savedInstanceState;
 	LayoutInflater inflater;
@@ -93,9 +97,12 @@ import com.runcom.wgcwgc.play.Play;
 				// TODO
 				Toast.makeText(inflater.getContext() ,"您点击了" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(context , Play.class);
-				String contents = "I am lyric ! \n @autor : @wgcwgc \n @time : @2016.11.25.10:41:57:256 \n contents... \n contents ... \n ... \n . \n end \n";
-				intent.putExtra("contents" ,contents);
-				intent.putExtra("source" ,audioList.get(position).getSource());
+				// 王菲_红豆.lrc 许嵩_雅俗共赏.lrc 
+				String lyricsPath = path + "lyrics/王菲_红豆.lrc";
+				intent.putExtra("lyricsPath" ,lyricsPath);
+				String source = audioList.get(position).getSource();
+				source = "http://abv.cn/music/红豆.mp3";
+				intent.putExtra("source" ,source);
 				context.startActivity(intent);
 			}
 		});
@@ -128,7 +135,7 @@ import com.runcom.wgcwgc.play.Play;
 			@Override
 			public void onClick(View v )
 			{
-				// TODO Auto-generated method stub
+				// TODO
 				Toast.makeText(inflater.getContext() ,"正在下载" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
 				String urlString = audioList.get(position).getLink().toString();
 				urlString = "http://abv.cn/music/千千阙歌.mp3";// 千千阙歌 红豆 光辉岁月.mp3
@@ -145,8 +152,16 @@ import com.runcom.wgcwgc.play.Play;
 				urlString = urlString.substring(0 ,urlString.lastIndexOf("/") + 1) + fileName;
 				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
 				{
-					File saveDir = new File(Environment.getExternalStorageDirectory() + "/&abc_record/musics");
-					download(urlString ,saveDir);
+					File saveDir = new File(path + "musics/");
+
+					try
+					{
+						download(URLDecoder.decode(fileName.substring(0 ,fileName.lastIndexOf(".")) + " " ,"UTF-8") ,urlString ,saveDir);
+					}
+					catch(UnsupportedEncodingException e)
+					{
+						e.printStackTrace();
+					}
 					imageButton_download.setEnabled(false);
 
 				}
@@ -182,9 +197,9 @@ import com.runcom.wgcwgc.play.Play;
 		}
 	}
 
-	void download(String path , File savDir )
+	void download(String filename , String path , File savDir )
 	{
-		DownloadTask task = new DownloadTask(handler , context , path , savDir);
+		DownloadTask task = new DownloadTask(filename , handler , context , path , savDir);
 		new Thread(task).start();
 	}
 
@@ -197,7 +212,7 @@ import com.runcom.wgcwgc.play.Play;
 			switch(msg.what)
 			{
 				case 1: // 更新进度
-					Toast.makeText(context ,"下载成功" ,Toast.LENGTH_LONG).show();
+					Toast.makeText(context ,msg.getData().get("filename") + "下载成功" ,Toast.LENGTH_LONG).show();
 					break;
 				case -1: // 下载失败
 					Toast.makeText(context ,"下载失败" ,Toast.LENGTH_LONG).show();

@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/hello_world"
-        android:src="@drawable/ic_share" />
+        android:src="@drawable/main_share" />
 
     <ImageButton
         android:id="@+id/tab1_fragement_list_item_download"
@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/hello_world"
-        android:src="@drawable/ic_download" />
+        android:src="@drawable/main_download" />
 
 </LinearLayout>

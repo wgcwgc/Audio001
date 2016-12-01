@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.runcom.wgcwgc.audio01.R;
 public class PlayLocaleAudio extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnItemClickListener , OnSeekBarChangeListener
 {
 	protected static final int SEARCH_MUSIC_SUCCESS = 0;// 搜索成功标记
+	protected static final int SEARCH_MUSIC_SUCCESS_FIRST = -1;// 首次搜索app目录
 	private SeekBar seekBar;
 	private ListView listView;
 	private ImageButton btnPlay;
@@ -48,6 +50,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 	String [] ext =
 	{ ".mp3", ".wav" };
 	File file = Environment.getExternalStorageDirectory();// sd卡根目录
+	String filePath = "/&abc_record/";
 	private ProgressDialog pd; // 进度条对话框
 	private MusicListAdapter ma;// 适配器
 	private MediaPlayer mp;
@@ -99,8 +102,29 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 		tv_totalTime = (TextView) findViewById(R.id.textView1_total_time_control_main);
 		tv_showName = (TextView) findViewById(R.id.tv_showName_control_main);
 
-		// search(file ,ext);
-		// hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
+		initListView();
+	}
+
+	private void initListView()
+	{
+		play_list.clear();
+		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+		{
+			new Thread(new Runnable()
+			{
+				public void run()
+				{
+					search(new File(file.toString() + filePath) ,ext);
+					hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS_FIRST);
+				}
+			}).start();
+
+		}
+		else
+		{
+			Toast.makeText(PlayLocaleAudio.this ,"请插入外部存储设备..." ,Toast.LENGTH_LONG).show();
+			System.out.println(Environment.getExternalStorageDirectory().toString());
+		}
 	}
 
 	public Handler hander = new Handler()
@@ -113,12 +137,16 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 					// 搜索音乐文件结束
 					ma = new MusicListAdapter();
 					listView.setAdapter(ma);
-					// listView01.setAdapter(ma);
 					pd.dismiss();
 					break;
 				case CURR_TIME_VALUE:
 					// 设置当前时间
 					tv_currTime.setText(msg.obj.toString());
+					break;
+				// 初始化listview
+				case SEARCH_MUSIC_SUCCESS_FIRST:
+					ma = new MusicListAdapter();
+					listView.setAdapter(ma);
 					break;
 				default:
 					break;
@@ -203,12 +231,12 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 				break;
 			case PAUSE:
 				mp.pause();
-				btnPlay.setImageResource(R.drawable.ic_media_play);
+				btnPlay.setImageResource(R.drawable.locale_play_media_play);
 				currState = START;
 				break;
 			case START:
 				mp.start();
-				btnPlay.setImageResource(R.drawable.ic_media_pause);
+				btnPlay.setImageResource(R.drawable.locale_play_media_pause);
 				currState = PAUSE;
 		}
 	}
@@ -246,13 +274,17 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 				Toast.makeText(PlayLocaleAudio.this ,"播放列表为空" ,Toast.LENGTH_SHORT).show();
 			}
 			else
-			{
-				tv_showName.setText("");
-				btnPlay.setImageResource(R.drawable.ic_media_play);
-				tv_currTime.setText("00:00");
-				tv_totalTime.setText("00:00");
-				Toast.makeText(PlayLocaleAudio.this ,"当前已经是最后一首歌曲了" ,Toast.LENGTH_SHORT).show();
-			}
+				if(currIndex + 1 == play_list.size())
+				{
+					Toast.makeText(PlayLocaleAudio.this ,"当前已经是最后一首歌曲了" ,Toast.LENGTH_SHORT).show();
+					currIndex = -1;
+					next();
+				}
+				else
+				{
+					currIndex = -1;
+					next();
+				}
 	}
 
 	// 开始播放
@@ -270,7 +302,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 				initSeekBar();
 				es.execute(this);
 				tv_showName.setText(play_list.get(currIndex));
-				btnPlay.setImageResource(R.drawable.ic_media_pause);
+				btnPlay.setImageResource(R.drawable.locale_play_media_pause);
 				currState = PAUSE;
 			}
 			catch(IOException e)
@@ -440,6 +472,9 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 		{
 			case android.R.id.home:
 				onBackPressed();
+				mp.stop();
+				ma.notifyDataSetChanged();
+				finish();
 				break;
 
 			// 搜索本地音乐菜单
@@ -474,10 +509,30 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 				{
 					play_list.clear();
 					ma.notifyDataSetChanged();
+					mp.stop();
+					tv_currTime.setText("00:00");
+					tv_showName.setText("");
+					tv_totalTime.setText("00:00");
+					seekBar.setProgress(0);
+					mp.seekTo(0);
+					btnPlay.setImageResource(R.drawable.locale_play_media_play);
 				}
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	// 重写按返回键退出播放
+		@Override
+		public boolean onKeyDown(int keyCode , KeyEvent event )
+		{
+			if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+			{
+				mp.stop();
+				finish();
+				return true;
+			}
+			return super.onKeyDown(keyCode ,event);
+		}
 
 }

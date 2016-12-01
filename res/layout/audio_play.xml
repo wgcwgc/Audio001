@@ -4,19 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/main_listView"
-        android:layout_width="wrap_content"
-        android:layout_height="128dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="#B8B8B8"
-        android:singleLine="true" >
-    </ListView>
-
     <com.runcom.wgcwgc.audioBean.LyricView
         android:id="@+id/LyricShow"
         android:layout_width="wrap_content"
@@ -26,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/main_listView"
+        android:layout_alignParentTop="true"
         android:background="#969696" />
 
     <LinearLayout
@@ -48,8 +35,8 @@
 
         <SeekBar
             android:id="@+id/seekBar1"
-            android:layout_width="0dp"
-            android:layout_height="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <TextView
@@ -83,7 +70,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_previous"
             android:onClick="previous"
-            android:src="@drawable/ic_media_previous" />
+            android:src="@drawable/play_previous" />
 
         <ImageButton
             android:id="@+id/media_play"
@@ -91,14 +78,14 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_play"
             android:onClick="play"
-            android:src="@drawable/ic_media_play" />
+            android:src="@drawable/play_pause" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/main_audio_next"
             android:onClick="next"
-            android:src="@drawable/ic_media_next" />
+            android:src="@drawable/play_next" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -17,7 +17,7 @@
         android:layout_marginLeft="11dp"
         android:contentDescription="asdf"
         android:onClick="start"
-        android:src="@drawable/ic_record_start"
+        android:src="@drawable/record_start"
         android:text="@string/start" />
 
     <ImageButton
@@ -28,7 +28,7 @@
         android:layout_alignBottom="@+id/button1"
         android:layout_centerHorizontal="true"
         android:onClick="stop"
-        android:src="@drawable/ic_record_stop"
+        android:src="@drawable/record_stop"
         android:text="@string/stop" />
 
     <ImageButton
@@ -39,7 +39,7 @@
         android:layout_alignBottom="@+id/button1"
         android:layout_alignParentRight="true"
         android:onClick="play"
-        android:src="@drawable/ic_media_play"
+        android:src="@drawable/locale_play_media_pause"
         android:text="@string/play" />
 
     <ImageButton
@@ -51,7 +51,7 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_marginBottom="34dp"
         android:onClick="share"
-        android:src="@drawable/ic_record_share"
+        android:src="@drawable/record_share"
         android:text="@string/share" />
 
 </RelativeLayout>

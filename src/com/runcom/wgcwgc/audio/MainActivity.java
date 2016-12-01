@@ -244,7 +244,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 			dots[i] = (ImageView) pointLayout.getChildAt(i);
 		}
 		viewPager_currentIndex = 0;
-		dots[viewPager_currentIndex].setBackgroundResource(R.drawable.dian_down);
+		dots[viewPager_currentIndex].setBackgroundResource(R.drawable.main_point_down);
 	}
 
 	/**
@@ -256,8 +256,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 		{
 			return;
 		}
-		dots[position].setBackgroundResource(R.drawable.dian_down);
-		dots[viewPager_currentIndex].setBackgroundResource(R.drawable.dian);
+		dots[position].setBackgroundResource(R.drawable.main_point_down);
+		dots[viewPager_currentIndex].setBackgroundResource(R.drawable.main_point);
 		viewPager_currentIndex = position;
 	}
 
