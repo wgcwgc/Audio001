@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runcom.wgcwgc.audio01.R;
+import com.runcom.wgcwgc.audioList_ReadAndWriter.Print;
+import com.runcom.wgcwgc.audioList_ReadAndWriter.Read;
 
 @SuppressLint("HandlerLeak")
 public class PlayLocaleAudio extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnItemClickListener , OnSeekBarChangeListener
@@ -114,7 +116,12 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 			{
 				public void run()
 				{
-					search(new File(file.toString() + filePath) ,ext);
+					play_list = new Read().reader();
+					if(play_list == null)
+					{
+						play_list = new ArrayList < String >();
+						search(new File(file.toString() + filePath) ,ext);
+					}
 					hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS_FIRST);
 				}
 			}).start();
@@ -471,9 +478,10 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 		switch(item.getItemId())
 		{
 			case android.R.id.home:
-				onBackPressed();
+				mp.release();
 				mp.stop();
 				ma.notifyDataSetChanged();
+				onBackPressed();
 				finish();
 				break;
 
@@ -488,10 +496,10 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 						public void run()
 						{
 							search(file ,ext);
+							new Print((ArrayList < String >) play_list).printerList();
 							hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS);
 						}
 					}).start();
-
 				}
 				else
 				{
@@ -508,6 +516,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 				else
 				{
 					play_list.clear();
+					new Print((ArrayList < String >) play_list).printerList();
 					ma.notifyDataSetChanged();
 					mp.stop();
 					tv_currTime.setText("00:00");
@@ -521,18 +530,26 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	// 重写按返回键退出播放
-		@Override
-		public boolean onKeyDown(int keyCode , KeyEvent event )
+	@Override
+	public boolean onKeyDown(int keyCode , KeyEvent event )
+	{
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
-			if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
-			{
-				mp.stop();
-				finish();
-				return true;
-			}
-			return super.onKeyDown(keyCode ,event);
+			mp.release();
+			mp.stop();
+			this.finish();
+			return true;
 		}
+		return super.onKeyDown(keyCode ,event);
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		new Print((ArrayList < String >) play_list).printerList();
+	    super.onDestroy();
+	}
 
 }

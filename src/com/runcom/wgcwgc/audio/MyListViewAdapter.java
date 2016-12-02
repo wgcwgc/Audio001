@@ -190,7 +190,7 @@ public class MyListViewAdapter extends BaseAdapter
 			myAudio.setId("ID" + i);
 			myAudio.setData("Data" + i);
 			myAudio.setLink("Link" + i);
-			myAudio.setName("name" + i);
+			myAudio.setName("ºì¶¹" + i);
 			myAudio.setSource("source" + i);
 			myAudio.setOther("other" + i);
 			audioList.add(myAudio);
