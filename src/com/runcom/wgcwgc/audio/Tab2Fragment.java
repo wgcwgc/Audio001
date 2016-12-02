@@ -30,7 +30,7 @@ public class Tab2Fragment extends Fragment
 		listView = (ListView) view.findViewById(R.id.fragment_tab2_listView);
 
 		MyListViewAdapter.initData();
-		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState));
+		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , 2));
 
 		// init();
 		return view;

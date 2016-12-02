@@ -24,10 +24,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.runcom.wgcwgc.ListViewInitData.InitData;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
 import com.runcom.wgcwgc.audioDownload.DownloadTask;
 import com.runcom.wgcwgc.play.Play;
+import com.runcom.wgcwgc.util.Util;
 
 @SuppressLint("InflateParams")
 public class MyListViewAdapter extends BaseAdapter
@@ -35,22 +37,22 @@ public class MyListViewAdapter extends BaseAdapter
 	public static MyAudio myAudio;
 	public static List < MyAudio > audioList;
 
-	final String path = Environment.getExternalStorageDirectory() + "/&abc_record/";
-
 	Bundle savedInstanceState;
 	LayoutInflater inflater;
 	static Context context;
+	static int flag;
 
 	public MyListViewAdapter()
 	{
 	}
 
 	@SuppressWarnings("static-access")
-	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState)
+	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState , int flag)
 	{
 		this.context = context;
 		this.inflater = inflater;
 		this.savedInstanceState = savedInstanceState;
+		this.flag = flag;
 	}
 
 	@Override
@@ -94,11 +96,11 @@ public class MyListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v )
 			{
-				// TODO
+				// TODO download lyrics and get source link
 				Toast.makeText(inflater.getContext() ,"Äúµã»÷ÁË" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(context , Play.class);
-				// Íõ·Æ_ºì¶¹.lrc ÐíáÔ_ÑÅË×¹²ÉÍ.lrc 
-				String lyricsPath = path + "lyrics/Íõ·Æ_ºì¶¹.lrc";
+				// Íõ·Æ_ºì¶¹.lrc ÐíáÔ_ÑÅË×¹²ÉÍ.lrc
+				String lyricsPath = Util.lyricsPath + "Íõ·Æ_ºì¶¹.lrc";
 				intent.putExtra("lyricsPath" ,lyricsPath);
 				String source = audioList.get(position).getSource();
 				source = "http://abv.cn/music/ºì¶¹.mp3";
@@ -135,10 +137,10 @@ public class MyListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v )
 			{
-				// TODO
+				// TODO download musics 
 				Toast.makeText(inflater.getContext() ,"ÕýÔÚÏÂÔØ" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
 				String urlString = audioList.get(position).getLink().toString();
-				urlString = "http://abv.cn/music/Ç§Ç§ãÚ¸è.mp3";// Ç§Ç§ãÚ¸è ºì¶¹ ¹â»ÔËêÔÂ.mp3
+				urlString = "http://abv.cn/music/ºì¶¹.mp3";// Ç§Ç§ãÚ¸è ºì¶¹ ¹â»ÔËêÔÂ.mp3
 				String fileName = urlString.substring(urlString.lastIndexOf("/") + 1);
 				try
 				{
@@ -152,7 +154,7 @@ public class MyListViewAdapter extends BaseAdapter
 				urlString = urlString.substring(0 ,urlString.lastIndexOf("/") + 1) + fileName;
 				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
 				{
-					File saveDir = new File(path + "musics/");
+					File saveDir = new File(Util.musicsPath);
 
 					try
 					{
@@ -186,6 +188,8 @@ public class MyListViewAdapter extends BaseAdapter
 		audioList = new ArrayList < MyAudio >();
 		for(int i = 0 ; i < 17 ; i ++ )
 		{
+			//TODO
+			new InitData(flag).initData();
 			myAudio = new MyAudio();
 			myAudio.setId("ID" + i);
 			myAudio.setData("Data" + i);

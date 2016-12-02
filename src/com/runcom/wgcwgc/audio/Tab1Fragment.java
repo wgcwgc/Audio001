@@ -23,7 +23,7 @@ public class Tab1Fragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_tab1 ,container ,false);
 		listView = (ListView) view.findViewById(R.id.fragment_tab1_listView);
 		MyListViewAdapter.initData();
-		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState));
+		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , 1));
 		return view;
 	}
 

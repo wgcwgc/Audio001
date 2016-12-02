@@ -33,6 +33,7 @@ import com.runcom.wgcwgc.record_wavelibrary_utils.SamplePlayer;
 import com.runcom.wgcwgc.record_wavelibrary_utils.SoundFile;
 import com.runcom.wgcwgc.record_wavelibrary_view.WaveSurfaceView;
 import com.runcom.wgcwgc.record_wavelibrary_view.WaveformView;
+import com.runcom.wgcwgc.util.Util;
 
 public class MyRecord extends Activity
 {
@@ -44,7 +45,7 @@ public class MyRecord extends Activity
 	private int recBufSize;// 录音最小buffer大小
 	private AudioRecord audioRecord;
 	private WaveCanvas waveCanvas;
-	private String mFileName = "wgcwgcRecord_" + new Random(57).toString().substring(17);// 文件名
+	private String mFileName = Util.recordFileName + new Random(57).toString().substring(17);// 文件名
 
 	WaveSurfaceView waveSfv;
 	private Button switchButton;

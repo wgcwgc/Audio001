@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioList_ReadAndWriter.Print;
 import com.runcom.wgcwgc.audioList_ReadAndWriter.Read;
+import com.runcom.wgcwgc.util.Util;
 
 @SuppressLint("HandlerLeak")
 public class PlayLocaleAudio extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnItemClickListener , OnSeekBarChangeListener
@@ -52,7 +53,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 	String [] ext =
 	{ ".mp3", ".wav" };
 	File file = Environment.getExternalStorageDirectory();// sd卡根目录
-	String filePath = "/&abc_record/";
+	String filePath = Util.appPath;
 	private ProgressDialog pd; // 进度条对话框
 	private MusicListAdapter ma;// 适配器
 	private MediaPlayer mp;
@@ -120,7 +121,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 					if(play_list == null)
 					{
 						play_list = new ArrayList < String >();
-						search(new File(file.toString() + filePath) ,ext);
+						search(new File(file + filePath) ,ext);
 					}
 					hander.sendEmptyMessage(SEARCH_MUSIC_SUCCESS_FIRST);
 				}

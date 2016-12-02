@@ -4,13 +4,15 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.runcom.wgcwgc.util.Util;
+
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
 public class U
 {
 
-	public static final String DATA_DIRECTORY = Environment.getExternalStorageDirectory() + "/&abc_record/audios/";
+	public static final String DATA_DIRECTORY = Util.audiosPath;
 
 	/**
 	 * 创建不同的目录

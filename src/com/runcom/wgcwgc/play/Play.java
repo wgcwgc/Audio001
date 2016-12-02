@@ -197,7 +197,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 				initSeekBar();
 				es.execute(this);
 				tv_showName.setText(play_list.get(currIndex));
-				btnPlay.setImageResource(R.drawable.play_pause);
+				btnPlay.setImageResource(R.drawable.play_start);
 				currState = PAUSE;
 			}
 			catch(IOException e)
