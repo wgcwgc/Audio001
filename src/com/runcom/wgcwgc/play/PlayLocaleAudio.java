@@ -479,7 +479,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 		switch(item.getItemId())
 		{
 			case android.R.id.home:
-				mp.release();
+//				mp.release();
 				mp.stop();
 				ma.notifyDataSetChanged();
 				onBackPressed();
@@ -538,7 +538,7 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 	{
 		if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
-			mp.release();
+//			mp.release();
 			mp.stop();
 			this.finish();
 			return true;

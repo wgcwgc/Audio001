@@ -13,7 +13,8 @@ public final class DownloadTask implements Runnable
 	private FileDownloader loader;
 	private Context context;
 	private Handler handler;
-	private String filename ;
+	private String filename;
+
 	public DownloadTask(String filename , Handler handler , Context context , String path , File saveDir)
 	{
 		this.filename = filename;
@@ -31,7 +32,7 @@ public final class DownloadTask implements Runnable
 		if(loader != null)
 			loader.exit();
 	}
-	
+
 	DownloadProgressListener downloadProgressListener = new DownloadProgressListener()
 	{
 		@Override
@@ -39,11 +40,11 @@ public final class DownloadTask implements Runnable
 		{
 			Message msg = new Message();
 			if(size == loader.getFileSize())
-            {
+			{
 				msg.what = 1;
-				msg.getData().putString("filename" , filename);
+				msg.getData().putString("filename" ,filename);
 				handler.sendMessage(msg);
-            }
+			}
 		}
 	};
 
@@ -56,8 +57,7 @@ public final class DownloadTask implements Runnable
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			handler.sendMessage(handler.obtainMessage(-1)); // 发送一条空消息对象
+			handler.sendMessage(handler.obtainMessage( -1)); // 发送一条空消息对象
 		}
 	}
 }

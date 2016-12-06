@@ -10,7 +10,6 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,6 +28,7 @@ import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
 import com.runcom.wgcwgc.audioDownload.DownloadTask;
 import com.runcom.wgcwgc.play.Play;
+import com.runcom.wgcwgc.util.NetUtil;
 import com.runcom.wgcwgc.util.Util;
 
 @SuppressLint("InflateParams")
@@ -96,16 +96,23 @@ public class MyListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v )
 			{
-				// TODO download lyrics and get source link
-				Toast.makeText(inflater.getContext() ,"您点击了" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(context , Play.class);
-				// 王菲_红豆.lrc 许嵩_雅俗共赏.lrc
-				String lyricsPath = Util.lyricsPath + "王菲_红豆.lrc";
-				intent.putExtra("lyricsPath" ,lyricsPath);
-				String source = audioList.get(position).getSource();
-				source = "http://abv.cn/music/红豆.mp3";
-				intent.putExtra("source" ,source);
-				context.startActivity(intent);
+				if(NetUtil.getNetworkState(context) == NetUtil.NETWORN_NONE)
+				{
+					Toast.makeText(context ,"请检查网络连接" ,Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					// TODO download lyrics and get source link
+					Toast.makeText(inflater.getContext() ,"您点击了" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(context , Play.class);
+					String source = audioList.get(position).getSource();
+					source = "http://abv.cn/music/红豆.mp3";// 千千阙歌 红豆 光辉岁月.mp3
+					intent.putExtra("source" ,source);
+					String lyric = audioList.get(position).getLyric();
+					lyric = "http://abv.cn/music/王菲_红豆.lrc";
+					intent.putExtra("lyric" ,lyric);
+					context.startActivity(intent);
+				}
 			}
 		});
 
@@ -118,16 +125,22 @@ public class MyListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v )
 			{
-				Toast.makeText(inflater.getContext() ,"正在分享" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.setType("audio/*");
-				intent.putExtra(Intent.EXTRA_SUBJECT ,"Share");
-				String url = ("www.baidu.com").toString();
-				File file = new File(url);
-				Uri uri = Uri.fromFile(file);
-				intent.putExtra(Intent.EXTRA_STREAM ,uri);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(Intent.createChooser(intent ,"分享"));
+				if(NetUtil.getNetworkState(context) == NetUtil.NETWORN_NONE)
+				{
+					Toast.makeText(context ,"请检查网络连接" ,Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					Toast.makeText(inflater.getContext() ,"正在分享" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(Intent.ACTION_SEND);
+					intent.setType("text/*");
+					intent.putExtra(Intent.EXTRA_SUBJECT ,"Share");
+					String url = ("www.baidu.com").toString();
+					intent.putExtra(Intent.EXTRA_STREAM ,url);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(Intent.createChooser(intent ,"分享"));
+
+				}
 			}
 		});
 
@@ -137,39 +150,47 @@ public class MyListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v )
 			{
-				// TODO download musics 
-				Toast.makeText(inflater.getContext() ,"正在下载" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
-				String urlString = audioList.get(position).getLink().toString();
-				urlString = "http://abv.cn/music/红豆.mp3";// 千千阙歌 红豆 光辉岁月.mp3
-				String fileName = urlString.substring(urlString.lastIndexOf("/") + 1);
-				try
+				if(NetUtil.getNetworkState(context) == NetUtil.NETWORN_NONE)
 				{
-					fileName = URLEncoder.encode(fileName ,"UTF-8");
+					Toast.makeText(context ,"请检查网络连接" ,Toast.LENGTH_SHORT).show();
 				}
-				catch(UnsupportedEncodingException e)
+				else
 				{
-					e.printStackTrace();
-				}
 
-				urlString = urlString.substring(0 ,urlString.lastIndexOf("/") + 1) + fileName;
-				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-				{
-					File saveDir = new File(Util.musicsPath);
-
+					// TODO download musics
+					Toast.makeText(inflater.getContext() ,"正在下载" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
+					String urlString = audioList.get(position).getLink().toString();
+					urlString = "http://abv.cn/music/红豆.mp3";// 千千阙歌 红豆 光辉岁月.mp3
+					String fileName = urlString.substring(urlString.lastIndexOf("/") + 1);
 					try
 					{
-						download(URLDecoder.decode(fileName.substring(0 ,fileName.lastIndexOf(".")) + " " ,"UTF-8") ,urlString ,saveDir);
+						fileName = URLEncoder.encode(fileName ,"UTF-8");
 					}
 					catch(UnsupportedEncodingException e)
 					{
 						e.printStackTrace();
 					}
-					imageButton_download.setEnabled(false);
 
-				}
-				else
-				{
-					Toast.makeText(context ,"请检查SD卡" ,Toast.LENGTH_LONG).show();
+					urlString = urlString.substring(0 ,urlString.lastIndexOf("/") + 1) + fileName;
+					if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+					{
+						File saveDir = new File(Util.musicsPath);
+
+						try
+						{
+							download(URLDecoder.decode(fileName.substring(0 ,fileName.lastIndexOf(".")) + " " ,"UTF-8") ,urlString ,saveDir);
+						}
+						catch(UnsupportedEncodingException e)
+						{
+							e.printStackTrace();
+						}
+						imageButton_download.setEnabled(false);
+
+					}
+					else
+					{
+						Toast.makeText(context ,"请检查SD卡" ,Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});
@@ -188,20 +209,19 @@ public class MyListViewAdapter extends BaseAdapter
 		audioList = new ArrayList < MyAudio >();
 		for(int i = 0 ; i < 17 ; i ++ )
 		{
-			//TODO
+			// TODO
 			new InitData(flag).initData();
 			myAudio = new MyAudio();
 			myAudio.setId("ID" + i);
-			myAudio.setData("Data" + i);
+			myAudio.setLyric("Data" + i);
 			myAudio.setLink("Link" + i);
 			myAudio.setName("红豆" + i);
 			myAudio.setSource("source" + i);
-			myAudio.setOther("other" + i);
 			audioList.add(myAudio);
 		}
 	}
 
-	void download(String filename , String path , File savDir )
+	public void download(String filename , String path , File savDir )
 	{
 		DownloadTask task = new DownloadTask(filename , handler , context , path , savDir);
 		new Thread(task).start();
@@ -219,7 +239,7 @@ public class MyListViewAdapter extends BaseAdapter
 					Toast.makeText(context ,msg.getData().get("filename") + "下载成功" ,Toast.LENGTH_LONG).show();
 					break;
 				case -1: // 下载失败
-					Toast.makeText(context ,"下载失败" ,Toast.LENGTH_LONG).show();
+					Toast.makeText(context ,"网络异常" ,Toast.LENGTH_LONG).show();
 					break;
 			}
 		}

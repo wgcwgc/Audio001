@@ -1,5 +1,8 @@
 package com.runcom.wgcwgc.play;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.LrcRead;
 import com.runcom.wgcwgc.audioBean.LyricContent;
 import com.runcom.wgcwgc.audioBean.LyricView;
+import com.runcom.wgcwgc.util.Util;
 
 @SuppressLint("HandlerLeak")
 public class Play extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnSeekBarChangeListener , OnBufferingUpdateListener
@@ -74,8 +78,9 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 		intent = getIntent();
 		source = intent.getStringExtra("source");
-		lyricsPath = intent.getStringExtra("lyricsPath");
-
+		lyricsPath = intent.getStringExtra("lyric");
+		lyricsPath = Util.lyricsPath + "王菲_红豆.lrc";//  defaultLyric.lrc
+		//TODO handle lyrics 
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(false);
 		actionbar.setDisplayShowHomeEnabled(true);
@@ -89,11 +94,34 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 	private void initLyric()
 	{
+		new Thread()
+		{
+
+		}.start();
 		mLrcRead = new LrcRead();
 		mLyricView = (LyricView) findViewById(R.id.LyricShow);
 		try
 		{
-			mLrcRead.Read(lyricsPath);
+			if(new File(lyricsPath).exists())
+			{
+				mLrcRead.Read(lyricsPath);
+			}
+			else
+			{
+				String defaultLyricPath = Util.lyricsPath + "defaultLyric.lrc";
+				File defaultLyricPathFile = new File(defaultLyricPath);
+				if( !defaultLyricPathFile.exists() || !defaultLyricPathFile.getParentFile().exists())
+				{
+					defaultLyricPathFile.getParentFile().mkdirs();
+
+					defaultLyricPathFile.createNewFile();
+					BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(defaultLyricPathFile , false));
+					bufferedWriter.write("[00:00.00] NO LYRIC\r\n");
+					bufferedWriter.flush();
+					bufferedWriter.close();
+				}
+				mLrcRead.Read(defaultLyricPath);
+			}
 		}
 		catch(Exception e)
 		{
@@ -163,6 +191,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		mp.setOnBufferingUpdateListener(this);
 		mp.setLooping(true);
 		play_list.add(source);
+
 		initLyric();
 		start();
 	}
@@ -211,14 +240,6 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		}
 	}
 
-	/**
-	 * 缓冲更新
-	 */
-	@Override
-	public void onBufferingUpdate(MediaPlayer mp , int percent )
-	{
-		seekBar.setSecondaryProgress(percent);
-	}
 
 	// 播放按钮
 	public void play(View v )
@@ -310,14 +331,6 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 				seekBar.setProgress(mp.getCurrentPosition());
 				Message msg = hander.obtainMessage(CURR_TIME_VALUE ,toTime(mp.getCurrentPosition()));
 				hander.sendMessage(msg);
-				try
-				{
-					Thread.sleep(10);
-				}
-				catch(InterruptedException e)
-				{
-					e.printStackTrace();
-				}
 			}
 			else
 			{
@@ -334,6 +347,12 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		{
 			mp.seekTo(progress);
 		}
+	}
+	@Override
+	public void onBufferingUpdate(MediaPlayer mp , int percent )
+	{
+		seekBar.setSecondaryProgress(percent * mp.getDuration() / 100);
+//		Log.d("LOG" , "percent: " + percent);
 	}
 
 	public void onStartTrackingTouch(SeekBar seekBar )

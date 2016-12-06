@@ -33,5 +33,6 @@
     <string name="main_audio_previous">上一曲</string>
     <string name="main_audio_curr_time">00:00</string>
     <string name="main_audio_total_time">00:00</string>
-
+    <string name="main_audio_lyricsShow">找不到匹配的歌词</string>
+	
 </resources>

@@ -2,7 +2,7 @@ package com.runcom.wgcwgc.audioBean;
 
 public class MyAudio
 {
-	private String id , name , link , source , data , other;
+	private String id , name , link , source , lyric , other;
 
 	public String getId()
 	{
@@ -44,14 +44,14 @@ public class MyAudio
 		this.source = source;
 	}
 
-	public String getData()
+	public String getLyric()
 	{
-		return data;
+		return lyric;
 	}
 
-	public void setData(String data )
+	public void setLyric(String lyric )
 	{
-		this.data = data;
+		this.lyric = lyric;
 	}
 
 	public String getOther()
@@ -67,7 +67,7 @@ public class MyAudio
 	@Override
 	public String toString()
 	{
-		return "Audio [id=" + id + ", name=" + name + ", link=" + link + ", source=" + source + ", data=" + data + ", other=" + other + "]";
+		return "Audio [id=" + id + ", name=" + name + ", link=" + link + ", source=" + source + ", lyric=" + lyric + ", other=" + other + "]";
 	}
 
 }
