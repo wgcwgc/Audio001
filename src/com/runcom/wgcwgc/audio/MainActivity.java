@@ -137,7 +137,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 	public void onPageScrolled(int position , float positionOffset , int positionOffsetPixels )
 	{
 		offset = (screen1_3 - cursorImg.getLayoutParams().width) / 2;
-		Log.d("LOG" ,position + "--" + positionOffset + "--" + positionOffsetPixels);
+//		Log.d("LOG" ,position + "--" + positionOffset + "--" + positionOffsetPixels);
 		// final float scale = getResources().getDisplayMetrics().density;
 		if(position == 0)
 		{// 0<->1

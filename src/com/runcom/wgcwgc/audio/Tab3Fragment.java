@@ -1,22 +1,17 @@
 package com.runcom.wgcwgc.audio;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.runcom.wgcwgc.audio01.R;
+import com.runcom.wgcwgc.audioBean.MyAudio;
 
 public class Tab3Fragment extends Fragment
 {
@@ -29,44 +24,29 @@ public class Tab3Fragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_tab3 ,container ,false);
 		listView = (ListView) view.findViewById(R.id.fragment_tab3_listView);
 
-		MyListViewAdapter.initData();
-		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , 3));
-
-		// init();
-		return view;
-	}
-
-	public void init()
-	{
-		String [] listItem =
-		{ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "a", "b", "c", "d", "e", "f", "g", "h", "i" };
-		adapter = new SimpleAdapter(getActivity() , getData(listItem) , R.layout.tab3_fragment_list_item , new String []
-		{ "name" } , new int []
-		{ R.id.tab3_fragment_list_item_name });
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new OnItemClickListener()
+//		MyListViewAdapter.initData(3);
+		
+		MyAudio myAudio = new MyAudio();
+		ArrayList < MyAudio > audioList = new ArrayList < MyAudio >() ;
+		for(int i = 34 ; i < 51 ; i ++ )
 		{
-
-			@Override
-			public void onItemClick(AdapterView < ? > arg0 , View arg1 , int arg2 , long arg3 )
-			{
-				Log.d("LOG" ,"asdf: " + arg2);
-			}
-
-		});
-	}
-
-	private List < ? extends Map < String , ? >> getData(String [] strs )
-	{
-		List < Map < String , Object >> list = new ArrayList < Map < String , Object >>();
-
-		for(int i = 0 ; i < strs.length ; i ++ )
-		{
-			Map < String , Object > map = new HashMap < String , Object >();
-			map.put("name" ,strs[i]);
-			list.add(map);
+			// TODO
+			// new InitData(flag).initData();
+			myAudio = new MyAudio();
+			myAudio.setId("ID" + i);
+			myAudio.setLyric("Data" + i);
+			myAudio.setLink("Link" + i);
+			myAudio.setName("ºì¶¹" + i);
+			myAudio.setSource("source" + i);
+			audioList.add(myAudio);
 		}
-		return list;
+		
+		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , audioList));
+		
+		
+//		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , 3));
+
+		return view;
 	}
 
 }

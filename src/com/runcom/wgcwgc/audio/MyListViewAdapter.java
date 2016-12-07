@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.runcom.wgcwgc.ListViewInitData.InitData;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
 import com.runcom.wgcwgc.audioDownload.DownloadTask;
@@ -35,24 +33,28 @@ import com.runcom.wgcwgc.util.Util;
 public class MyListViewAdapter extends BaseAdapter
 {
 	public static MyAudio myAudio;
-	public static List < MyAudio > audioList;
+	public static ArrayList < MyAudio > audioList;
 
 	Bundle savedInstanceState;
 	LayoutInflater inflater;
 	static Context context;
 	static int flag;
+	
 
-	public MyListViewAdapter()
+	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState , ArrayList < MyAudio > audioList)
 	{
-	}
-
-	@SuppressWarnings("static-access")
-	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState , int flag)
-	{
-		this.context = context;
+		MyListViewAdapter.context = context;
 		this.inflater = inflater;
 		this.savedInstanceState = savedInstanceState;
-		this.flag = flag;
+		MyListViewAdapter.audioList = audioList;
+	}
+
+	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState , int flag)
+	{
+		MyListViewAdapter.context = context;
+		this.inflater = inflater;
+		this.savedInstanceState = savedInstanceState;
+		MyListViewAdapter.flag = flag;
 	}
 
 	@Override
@@ -204,21 +206,58 @@ public class MyListViewAdapter extends BaseAdapter
 		ImageButton share , download;
 	}
 
-	public static void initData()
+	public static void initData(int flag )
 	{
 		audioList = new ArrayList < MyAudio >();
-		for(int i = 0 ; i < 17 ; i ++ )
+		if(1 == flag)
 		{
-			// TODO
-			new InitData(flag).initData();
-			myAudio = new MyAudio();
-			myAudio.setId("ID" + i);
-			myAudio.setLyric("Data" + i);
-			myAudio.setLink("Link" + i);
-			myAudio.setName("ºì¶¹" + i);
-			myAudio.setSource("source" + i);
-			audioList.add(myAudio);
+			for(int i = 0 ; i < 17 ; i ++ )
+			{
+				// TODO
+				// new InitData(flag).initData();
+				myAudio = new MyAudio();
+				myAudio.setId("ID" + i);
+				myAudio.setLyric("Data" + i);
+				myAudio.setLink("Link" + i);
+				myAudio.setName("ºì¶¹" + i);
+				myAudio.setSource("source" + i);
+				audioList.add(myAudio);
+			}
 		}
+		else
+			if(2 == flag)
+			{
+				for(int i = 17 ; i < 34 ; i ++ )
+				{
+					// TODO
+					// new InitData(flag).initData();
+					myAudio = new MyAudio();
+					myAudio.setId("ID" + i);
+					myAudio.setLyric("Data" + i);
+					myAudio.setLink("Link" + i);
+					myAudio.setName("ºì¶¹" + i);
+					myAudio.setSource("source" + i);
+					audioList.add(myAudio);
+				}
+
+			}
+			else
+				if(3 == flag)
+				{
+					for(int i = 34 ; i < 51 ; i ++ )
+					{
+						// TODO
+						// new InitData(flag).initData();
+						myAudio = new MyAudio();
+						myAudio.setId("ID" + i);
+						myAudio.setLyric("Data" + i);
+						myAudio.setLink("Link" + i);
+						myAudio.setName("ºì¶¹" + i);
+						myAudio.setSource("source" + i);
+						audioList.add(myAudio);
+					}
+
+				}
 	}
 
 	public void download(String filename , String path , File savDir )
