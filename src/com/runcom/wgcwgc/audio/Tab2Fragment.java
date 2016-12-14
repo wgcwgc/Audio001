@@ -12,6 +12,7 @@ import android.widget.SimpleAdapter;
 
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
+import com.umeng.analytics.MobclickAgent;
 
 public class Tab2Fragment extends Fragment
 {
@@ -24,10 +25,10 @@ public class Tab2Fragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_tab2 ,container ,false);
 		listView = (ListView) view.findViewById(R.id.fragment_tab2_listView);
 
-//		MyListViewAdapter.initData(2);
-		
+		// MyListViewAdapter.initData(2);
+
 		MyAudio myAudio = new MyAudio();
-		ArrayList < MyAudio > audioList = new ArrayList < MyAudio >() ;
+		ArrayList < MyAudio > audioList = new ArrayList < MyAudio >();
 		for(int i = 17 ; i < 34 ; i ++ )
 		{
 			// TODO
@@ -40,11 +41,26 @@ public class Tab2Fragment extends Fragment
 			myAudio.setSource("source" + i);
 			audioList.add(myAudio);
 		}
-		
+
 		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , audioList));
-//		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , 2));
+		// listView.setAdapter(new MyListViewAdapter(getContext() , inflater ,
+		// savedInstanceState , 2));
 
 		return view;
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onPageStart("Tab2Fragment");
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPageEnd("Tab2Fragment");
 	}
 
 }

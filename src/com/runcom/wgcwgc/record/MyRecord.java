@@ -34,6 +34,7 @@ import com.runcom.wgcwgc.record_wavelibrary_utils.SoundFile;
 import com.runcom.wgcwgc.record_wavelibrary_view.WaveSurfaceView;
 import com.runcom.wgcwgc.record_wavelibrary_view.WaveformView;
 import com.runcom.wgcwgc.util.Util;
+import com.umeng.analytics.MobclickAgent;
 
 public class MyRecord extends Activity
 {
@@ -367,6 +368,22 @@ public class MyRecord extends Activity
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onPageStart("MyRecordScreen");
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPageEnd("MyRecordScreen");
+		MobclickAgent.onPause(this);
 	}
 
 }

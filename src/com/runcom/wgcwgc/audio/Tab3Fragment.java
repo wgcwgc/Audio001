@@ -12,6 +12,7 @@ import android.widget.SimpleAdapter;
 
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
+import com.umeng.analytics.MobclickAgent;
 
 public class Tab3Fragment extends Fragment
 {
@@ -24,10 +25,10 @@ public class Tab3Fragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_tab3 ,container ,false);
 		listView = (ListView) view.findViewById(R.id.fragment_tab3_listView);
 
-//		MyListViewAdapter.initData(3);
-		
+		// MyListViewAdapter.initData(3);
+
 		MyAudio myAudio = new MyAudio();
-		ArrayList < MyAudio > audioList = new ArrayList < MyAudio >() ;
+		ArrayList < MyAudio > audioList = new ArrayList < MyAudio >();
 		for(int i = 34 ; i < 51 ; i ++ )
 		{
 			// TODO
@@ -40,13 +41,27 @@ public class Tab3Fragment extends Fragment
 			myAudio.setSource("source" + i);
 			audioList.add(myAudio);
 		}
-		
+
 		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , audioList));
-		
-		
-//		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , 3));
+
+		// listView.setAdapter(new MyListViewAdapter(getContext() , inflater ,
+		// savedInstanceState , 3));
 
 		return view;
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onPageStart("Tab3Fragment"); // 统计页面，"MainScreen"为页面名称，可自定义
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPageEnd("Tab3Fragment");
 	}
 
 }

@@ -39,6 +39,7 @@ import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioList_ReadAndWriter.Print;
 import com.runcom.wgcwgc.audioList_ReadAndWriter.Read;
 import com.runcom.wgcwgc.util.Util;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("HandlerLeak")
 public class PlayLocaleAudio extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnItemClickListener , OnSeekBarChangeListener
@@ -551,6 +552,22 @@ public class PlayLocaleAudio extends Activity implements Runnable , OnCompletion
 	{
 		new Print((ArrayList < String >) play_list).printerList();
 	    super.onDestroy();
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onPageStart("PlayLocalAudioScreen"); 
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPageEnd("PlayLocalAudioScreen");
+		MobclickAgent.onPause(this);
 	}
 
 }

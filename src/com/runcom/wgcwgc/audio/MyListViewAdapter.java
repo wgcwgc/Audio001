@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,9 +109,10 @@ public class MyListViewAdapter extends BaseAdapter
 					Toast.makeText(inflater.getContext() ,"Äúµã»÷ÁË" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(context , Play.class);
 					String source = audioList.get(position).getSource();
-					source = "http://abv.cn/music/ºì¶¹.mp3";// Ç§Ç§ãÚ¸è ºì¶¹ ¹â»ÔËêÔÂ.mp3
+//					source = "http://abv.cn/music/ºì¶¹.mp3";// Ç§Ç§ãÚ¸è ºì¶¹ ¹â»ÔËêÔÂ.mp3
 					intent.putExtra("source" ,source);
 					String lyric = audioList.get(position).getLyric();
+					Log.d("LOG" , "audio: " + source + "\nlyric: " + lyric);
 					lyric = "http://abv.cn/music/Íõ·Æ_ºì¶¹.lrc";
 					intent.putExtra("lyric" ,lyric);
 					context.startActivity(intent);

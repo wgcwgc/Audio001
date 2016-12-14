@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.play.PlayLocaleAudio;
 import com.runcom.wgcwgc.record.MyRecord;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint(
 { "HandlerLeak", "InflateParams" })
@@ -82,7 +83,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 		loopPlay();
 
 		initMiddle();
-
+		MobclickAgent.openActivityDurationTrack(false);
 	}
 
 	/**
@@ -137,7 +138,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 	public void onPageScrolled(int position , float positionOffset , int positionOffsetPixels )
 	{
 		offset = (screen1_3 - cursorImg.getLayoutParams().width) / 2;
-//		Log.d("LOG" ,position + "--" + positionOffset + "--" + positionOffsetPixels);
+		// Log.d("LOG" ,position + "--" + positionOffset + "--" +
+		// positionOffsetPixels);
 		// final float scale = getResources().getDisplayMetrics().density;
 		if(position == 0)
 		{// 0<->1
@@ -337,7 +339,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 
 					try
 					{
-						Thread.sleep(2000);
+						Thread.sleep(5000);
 					}
 					catch(InterruptedException e)
 					{
@@ -388,12 +390,27 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 			}
 			else
 			{
+				MobclickAgent.onKillProcess(this);
 				finish();
 				System.exit(0);
 			}
 			return true;
 		}
 		return super.onKeyDown(keyCode ,event);
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

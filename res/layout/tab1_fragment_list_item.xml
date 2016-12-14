@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/hello_world"
-        android:textSize="37sp" />
+        android:textSize="27sp" />
 
     <ImageButton
         android:id="@+id/tab1_fragment_list_item_share"

@@ -21,6 +21,7 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import com.runcom.wgcwgc.audioBean.LrcRead;
 import com.runcom.wgcwgc.audioBean.LyricContent;
 import com.runcom.wgcwgc.audioBean.LyricView;
 import com.runcom.wgcwgc.util.Util;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("HandlerLeak")
 public class Play extends Activity implements Runnable , OnCompletionListener , OnErrorListener , OnSeekBarChangeListener , OnBufferingUpdateListener
@@ -191,7 +193,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		mp.setOnBufferingUpdateListener(this);
 		mp.setLooping(true);
 		play_list.add(source);
-
+		Log.d("LOG" , "source: " + source);
 		initLyric();
 		start();
 	}
@@ -416,6 +418,22 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 			return true;
 		}
 		return super.onKeyDown(keyCode ,event);
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		MobclickAgent.onPageStart("PlayScreen");
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		MobclickAgent.onPageEnd("PlayScreen");
+		MobclickAgent.onPause(this);
 	}
 
 }
