@@ -33,15 +33,13 @@ public class Tab1Fragment extends Fragment
 	MyAudio myAudio = new MyAudio();
 	ArrayList < MyAudio > audioList = new ArrayList < MyAudio >();
 
-	@Override
+    @Override
 	public View onCreateView(LayoutInflater inflater , ViewGroup container , Bundle savedInstanceState )
 	{
 		View view = inflater.inflate(R.layout.fragment_tab1 ,container ,false);
 		listView = (ListView) view.findViewById(R.id.fragment_tab1_listView);
 
-		// MyListViewAdapter.initData(1);
 		new GetThread_getproducts().start();
-
 		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , audioList));
 		return view;
 	}
@@ -51,9 +49,10 @@ public class Tab1Fragment extends Fragment
 
 		public GetThread_getproducts()
 		{
-
+			
 		}
 
+		@Override
 		public void run()
 		{
 
@@ -79,10 +78,9 @@ public class Tab1Fragment extends Fragment
 					JSONObject jsonObject = new JSONObject(returnLine);
 					String audio = jsonObject.getString("audio");
 					String lyric = jsonObject.getString("lyric");
-
+					audioList.clear();
 					for(int i = 0 ; i < 17 ; i ++ )
 					{
-						// TODO
 						myAudio = new MyAudio();
 						myAudio.setLyric(lyric);
 						myAudio.setName(audio.substring(audio.lastIndexOf("/") + 1 ,audio.lastIndexOf(".")) + "_" + i);

@@ -208,60 +208,6 @@ public class MyListViewAdapter extends BaseAdapter
 		ImageButton share , download;
 	}
 
-	public static void initData(int flag )
-	{
-		audioList = new ArrayList < MyAudio >();
-		if(1 == flag)
-		{
-			for(int i = 0 ; i < 17 ; i ++ )
-			{
-				// TODO
-				// new InitData(flag).initData();
-				myAudio = new MyAudio();
-				myAudio.setId("ID" + i);
-				myAudio.setLyric("Data" + i);
-				myAudio.setLink("Link" + i);
-				myAudio.setName("ºì¶¹" + i);
-				myAudio.setSource("source" + i);
-				audioList.add(myAudio);
-			}
-		}
-		else
-			if(2 == flag)
-			{
-				for(int i = 17 ; i < 34 ; i ++ )
-				{
-					// TODO
-					// new InitData(flag).initData();
-					myAudio = new MyAudio();
-					myAudio.setId("ID" + i);
-					myAudio.setLyric("Data" + i);
-					myAudio.setLink("Link" + i);
-					myAudio.setName("ºì¶¹" + i);
-					myAudio.setSource("source" + i);
-					audioList.add(myAudio);
-				}
-
-			}
-			else
-				if(3 == flag)
-				{
-					for(int i = 34 ; i < 51 ; i ++ )
-					{
-						// TODO
-						// new InitData(flag).initData();
-						myAudio = new MyAudio();
-						myAudio.setId("ID" + i);
-						myAudio.setLyric("Data" + i);
-						myAudio.setLink("Link" + i);
-						myAudio.setName("ºì¶¹" + i);
-						myAudio.setSource("source" + i);
-						audioList.add(myAudio);
-					}
-
-				}
-	}
-
 	public void download(String filename , String path , File savDir )
 	{
 		DownloadTask task = new DownloadTask(filename , handler , context , path , savDir);
