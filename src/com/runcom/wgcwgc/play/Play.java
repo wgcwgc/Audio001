@@ -118,7 +118,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 					defaultLyricPathFile.createNewFile();
 					BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(defaultLyricPathFile , false));
-					bufferedWriter.write("[00:00.00] NO LYRIC\r\n");
+					bufferedWriter.write("[00:00.00] NO LYRICS\r\n");
 					bufferedWriter.flush();
 					bufferedWriter.close();
 				}
@@ -242,6 +242,11 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		}
 	}
 
+	
+	public void record(View view)
+	{
+		
+	}
 
 	// ²¥·Å°´Å¥
 	public void play(View v )
@@ -391,6 +396,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu )
 	{
+//		getMenuInflater().inflate(R.menu.main ,menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

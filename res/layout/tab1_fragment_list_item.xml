@@ -7,10 +7,13 @@
     <TextView
         android:id="@+id/tab1_fragment_list_item_name"
         android:layout_width="222dp"
-        android:layout_height="wrap_content"
+        android:layout_height="57dp"
         android:layout_gravity="center"
-        android:text="@string/hello_world"
-        android:textSize="27sp" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/main_viewPager_listView"
+        android:textSize="33sp" />
 
     <ImageButton
         android:id="@+id/tab1_fragment_list_item_share"
@@ -18,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/hello_world"
-        android:src="@drawable/main_share" />
+        android:src="@drawable/main_share"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/tab1_fragement_list_item_download"
@@ -26,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/hello_world"
-        android:src="@drawable/main_download" />
+        android:src="@drawable/main_download"
+        android:visibility="gone" />
 
 </LinearLayout>

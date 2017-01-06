@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,7 +24,6 @@ import android.widget.Toast;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
 import com.runcom.wgcwgc.audioDownload.DownloadTask;
-import com.runcom.wgcwgc.play.Play;
 import com.runcom.wgcwgc.util.NetUtil;
 import com.runcom.wgcwgc.util.Util;
 
@@ -36,31 +33,47 @@ public class MyListViewAdapter extends BaseAdapter
 	public static MyAudio myAudio;
 	public static ArrayList < MyAudio > audioList;
 
-	Bundle savedInstanceState;
 	LayoutInflater inflater;
-	static Context context;
 	static int flag;
-	
+	private Context context;
 
-	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState , ArrayList < MyAudio > audioList)
+	public MyListViewAdapter(LayoutInflater inflater , ArrayList < MyAudio > audioList)
 	{
-		MyListViewAdapter.context = context;
 		this.inflater = inflater;
-		this.savedInstanceState = savedInstanceState;
+		// this.inflater=LayoutInflater.from(this);
 		MyListViewAdapter.audioList = audioList;
 	}
 
-	public MyListViewAdapter(Context context , LayoutInflater inflater , Bundle savedInstanceState , int flag)
+	public MyListViewAdapter(Context context , ArrayList < MyAudio > audioList)
 	{
-		MyListViewAdapter.context = context;
-		this.inflater = inflater;
-		this.savedInstanceState = savedInstanceState;
-		MyListViewAdapter.flag = flag;
+		this.context = context;
+		MyListViewAdapter.audioList = audioList;
+		inflater = LayoutInflater.from(this.context);
 	}
+
+	// @SuppressWarnings("unchecked")
+	// public void setAudioList(ArrayList < MyAudio > audioList)
+	// {
+	// if(audioList != null)
+	// {
+	// audioList = (ArrayList < MyAudio >) audioList.clone();
+	// notifyDataSetChanged();
+	// }
+	// }
+	//
+	// public void clearAudioList()
+	// {
+	// if(audioList != null)
+	// {
+	// audioList.clear();
+	// }
+	// notifyDataSetChanged();
+	// }
 
 	@Override
 	public int getCount()
 	{
+		// return audioList == null ? 0 : audioList.size();
 		return audioList.size();
 	}
 
@@ -92,46 +105,55 @@ public class MyListViewAdapter extends BaseAdapter
 			holder = (Holder) convertView.getTag();
 		}
 
-		holder.name.setText(audioList.get(position).getName());
-
-		convertView.setOnClickListener(new View.OnClickListener()
+		if(audioList.size() == 0 || audioList.size() <= position)
 		{
-			@Override
-			public void onClick(View v )
-			{
-				if(NetUtil.getNetworkState(context) == NetUtil.NETWORN_NONE)
-				{
-					Toast.makeText(context ,"Çë¼ì²éÍøÂçÁ¬½Ó" ,Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					// TODO download lyrics and get source link
-					Toast.makeText(inflater.getContext() ,"Äúµã»÷ÁË" + audioList.get(position).getName().toString() ,Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(context , Play.class);
-					String source = audioList.get(position).getSource();
-//					source = "http://abv.cn/music/ºì¶¹.mp3";// Ç§Ç§ãÚ¸è ºì¶¹ ¹â»ÔËêÔÂ.mp3
-					intent.putExtra("source" ,source);
-					String lyric = audioList.get(position).getLyric();
-					Log.d("LOG" , "audio: " + source + "\nlyric: " + lyric);
-					lyric = "http://abv.cn/music/Íõ·Æ_ºì¶¹.lrc";
-					intent.putExtra("lyric" ,lyric);
-					context.startActivity(intent);
-				}
-			}
-		});
+
+		}
+		else
+			holder.name.setText(audioList.get(position).getName());
+
+		// convertView.setOnClickListener(new View.OnClickListener()
+		// {
+		// @Override
+		// public void onClick(View v )
+		// {
+		// if(NetUtil.getNetworkState(inflater.getContext()) ==
+		// NetUtil.NETWORN_NONE)
+		// {
+		// Toast.makeText(inflater.getContext() ,"Çë¼ì²éÍøÂçÁ¬½Ó"
+		// ,Toast.LENGTH_SHORT).show();
+		// }
+		// else
+		// {
+		// // TODO download lyrics and get source link
+		// Toast.makeText(inflater.getContext() ,"Äúµã»÷ÁË" +
+		// audioList.get(position).getName().toString()
+		// ,Toast.LENGTH_SHORT).show();
+		// Intent intent = new Intent(inflater.getContext() , Play.class);
+		// String source = audioList.get(position).getSource();
+		// // source = "http://abv.cn/music/ºì¶¹.mp3";// Ç§Ç§ãÚ¸è ºì¶¹ ¹â»ÔËêÔÂ.mp3
+		// intent.putExtra("source" ,source);
+		// String lyric = audioList.get(position).getLyric();
+		// Log.d("LOG" ,"audio: " + source + "\nlyric: " + lyric);
+		// // lyric = "http://abv.cn/music/Íõ·Æ_ºì¶¹.lrc";
+		// intent.putExtra("lyric" ,lyric);
+		// inflater.getContext().startActivity(intent);
+		// }
+		// }
+		//
+		// });
 
 		ImageButton imageButton_share = (ImageButton) convertView.findViewById(R.id.tab1_fragment_list_item_share);
 		final ImageButton imageButton_download = (ImageButton) convertView.findViewById(R.id.tab1_fragement_list_item_download);
-
 		imageButton_share.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v )
 			{
-				if(NetUtil.getNetworkState(context) == NetUtil.NETWORN_NONE)
+				if(NetUtil.getNetworkState(inflater.getContext()) == NetUtil.NETWORN_NONE)
 				{
-					Toast.makeText(context ,"Çë¼ì²éÍøÂçÁ¬½Ó" ,Toast.LENGTH_SHORT).show();
+					Toast.makeText(inflater.getContext() ,"Çë¼ì²éÍøÂçÁ¬½Ó" ,Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
@@ -140,10 +162,9 @@ public class MyListViewAdapter extends BaseAdapter
 					intent.setType("text/*");
 					intent.putExtra(Intent.EXTRA_SUBJECT ,"Share");
 					String url = ("www.baidu.com").toString();
-					intent.putExtra(Intent.EXTRA_STREAM ,url);
+					intent.putExtra(Intent.EXTRA_TEXT ,url);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					context.startActivity(Intent.createChooser(intent ,"·ÖÏí"));
-
+					inflater.getContext().startActivity(Intent.createChooser(intent ,"·ÖÏí"));
 				}
 			}
 		});
@@ -154,13 +175,12 @@ public class MyListViewAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v )
 			{
-				if(NetUtil.getNetworkState(context) == NetUtil.NETWORN_NONE)
+				if(NetUtil.getNetworkState(inflater.getContext()) == NetUtil.NETWORN_NONE)
 				{
-					Toast.makeText(context ,"Çë¼ì²éÍøÂçÁ¬½Ó" ,Toast.LENGTH_SHORT).show();
+					Toast.makeText(inflater.getContext() ,"Çë¼ì²éÍøÂçÁ¬½Ó" ,Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
-
 					// TODO download musics
 					Toast.makeText(inflater.getContext() ,"ÕýÔÚÏÂÔØ" + audioList.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
 					String urlString = audioList.get(position).getLink().toString();
@@ -179,7 +199,6 @@ public class MyListViewAdapter extends BaseAdapter
 					if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
 					{
 						File saveDir = new File(Util.musicsPath);
-
 						try
 						{
 							download(URLDecoder.decode(fileName.substring(0 ,fileName.lastIndexOf(".")) + " " ,"UTF-8") ,urlString ,saveDir);
@@ -193,7 +212,7 @@ public class MyListViewAdapter extends BaseAdapter
 					}
 					else
 					{
-						Toast.makeText(context ,"Çë¼ì²éSD¿¨" ,Toast.LENGTH_LONG).show();
+						Toast.makeText(inflater.getContext() ,"Çë¼ì²éSD¿¨" ,Toast.LENGTH_LONG).show();
 					}
 				}
 			}
@@ -210,7 +229,7 @@ public class MyListViewAdapter extends BaseAdapter
 
 	public void download(String filename , String path , File savDir )
 	{
-		DownloadTask task = new DownloadTask(filename , handler , context , path , savDir);
+		DownloadTask task = new DownloadTask(filename , handler , inflater.getContext() , path , savDir);
 		new Thread(task).start();
 	}
 
@@ -223,10 +242,8 @@ public class MyListViewAdapter extends BaseAdapter
 			switch(msg.what)
 			{
 				case 1: // ¸üÐÂ½ø¶È
-					Toast.makeText(context ,msg.getData().get("filename") + "ÏÂÔØ³É¹¦" ,Toast.LENGTH_LONG).show();
 					break;
 				case -1: // ÏÂÔØÊ§°Ü
-					Toast.makeText(context ,"ÍøÂçÒì³£" ,Toast.LENGTH_LONG).show();
 					break;
 			}
 		}

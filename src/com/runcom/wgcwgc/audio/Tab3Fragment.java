@@ -16,33 +16,79 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
+import com.runcom.wgcwgc.util.NetUtil;
 import com.runcom.wgcwgc.web.SSLSocketFactoryEx;
 import com.umeng.analytics.MobclickAgent;
 
 public class Tab3Fragment extends Fragment
 {
 	ListView listView;
-	SimpleAdapter adapter;
+	MyListViewAdapter adapter;
 
 	MyAudio myAudio = new MyAudio();
-	ArrayList < MyAudio > audioList = new ArrayList < MyAudio >();
+	ArrayList < MyAudio > audioList03 = new ArrayList < MyAudio >();
+	private View rootView;
 
+	@Override
+	public void onCreate(Bundle savedInstanceState )
+	{
+//		new GetThread_getList3().start();
+//		adapter = new MyListViewAdapter(getContext() , audioList03);
+		super.onCreate(savedInstanceState);
+	}
+
+	@SuppressWarnings("deprecation")
 	@Override
 	public View onCreateView(LayoutInflater inflater , ViewGroup container , Bundle savedInstanceState )
 	{
-		View view = inflater.inflate(R.layout.fragment_tab3 ,container ,false);
-		listView = (ListView) view.findViewById(R.id.fragment_tab3_listView);
+
+		// if(rootView == null)
+		// {
+		rootView = inflater.inflate(R.layout.fragment_tab3 ,container ,false);
+		// }
+		//
+		// ViewGroup parent = (ViewGroup) rootView.getParent();
+		// if(parent != null)
+		// {
+		// parent.removeView(rootView);
+		// }
+		listView = (ListView) rootView.findViewById(R.id.fragment_tab3_listView);
+
+		if(NetUtil.getNetworkState(inflater.getContext()) == NetUtil.NETWORN_NONE)
+		{
+			// Toast.makeText(getContext() ,"Çë¼ì²éÍøÂçÁ¬½Ó"
+			// ,Toast.LENGTH_SHORT).show();
+			TextView emptyView = new TextView(getContext());
+			emptyView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT , LayoutParams.FILL_PARENT));
+			emptyView.setText("\n\n\n\n\n\n\n\tThis appears when the network can not connect\n\t\tPlease cheak your network state!!!");
+			// emptyView.setVisibility(View.GONE);
+			((ViewGroup) listView.getParent()).addView(emptyView);
+			listView.setEmptyView(emptyView);
+			return rootView;
+		}
 
 		new GetThread_getList3().start();
+		// audioList03.clear();
+		// for(int i = 0 ; i < 17 ; i ++ )
+		// {
+		// myAudio = new MyAudio();
+		// myAudio.setLyric("3_" + i);
+		// myAudio.setName("3_" + i);
+		// myAudio.setSource("3");
+		// audioList03.add(myAudio);
+		// }
 
-		listView.setAdapter(new MyListViewAdapter(getContext() , inflater , savedInstanceState , audioList));
+		adapter = new MyListViewAdapter(inflater , audioList03);
+		listView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 
-		return view;
+		return rootView;
 	}
 
 	class GetThread_getList3 extends Thread
@@ -79,14 +125,14 @@ public class Tab3Fragment extends Fragment
 					JSONObject jsonObject = new JSONObject(returnLine);
 					String audio = jsonObject.getString("audio");
 					String lyric = jsonObject.getString("lyric");
-					audioList.clear();
+					audioList03.clear();
 					for(int i = 0 ; i < 17 ; i ++ )
 					{
 						myAudio = new MyAudio();
 						myAudio.setLyric(lyric);
 						myAudio.setName(audio.substring(audio.lastIndexOf("/") + 1 ,audio.lastIndexOf(".")) + "_" + i);
 						myAudio.setSource(audio);
-						audioList.add(myAudio);
+						audioList03.add(myAudio);
 					}
 				}
 			}

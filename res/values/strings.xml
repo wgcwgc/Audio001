@@ -6,6 +6,7 @@
 
     <!-- app_ViewPager -->
     <string name="main_viewPager_dian">小圆点</string>
+    <string name="main_viewPager_listView">请检查网络连接</string>
 
     <!-- app_recorder menu setting -->
     <string name="search">搜索本地音乐</string>
@@ -13,7 +14,7 @@
     <string name="recorder">录音</string>
     <string name="playLocalAudio">播放本地音频</string>
     <string name="exit">退出</string>
-    
+
     <!-- app_recorder interface -->
     <string name="Recording">Android Audio Recording Application</string>
     <string name="start">start</string>
@@ -27,12 +28,15 @@
     <string name="main_middle_button">中学</string>
 
     <!-- main_audioPlay -->
-    <string name="hello_world"> </string>
+    <string name="hello_world"></string>
     <string name="main_audio_play">播放</string>
     <string name="main_audio_next">下一曲</string>
     <string name="main_audio_previous">上一曲</string>
     <string name="main_audio_curr_time">00:00</string>
     <string name="main_audio_total_time">00:00</string>
     <string name="main_audio_lyricsShow">找不到匹配的歌词</string>
-	
+    <string name="main_audio_record_start">开始</string>
+    <string name="main_audio_record_play">停止</string>
+    <string name="main_audio_record_share">分享</string>
+
 </resources>

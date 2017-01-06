@@ -7,24 +7,23 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
 
 import com.runcom.wgcwgc.audio01.R;
@@ -32,9 +31,8 @@ import com.runcom.wgcwgc.play.PlayLocaleAudio;
 import com.runcom.wgcwgc.record.MyRecord;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint(
-{ "HandlerLeak", "InflateParams" })
-public class MainActivity extends FragmentActivity implements OnClickListener , OnPageChangeListener
+@SuppressLint("HandlerLeak")
+public class MainActivity01 extends FragmentActivity
 {
 
 	private ViewPager viewPager_top;
@@ -50,142 +48,69 @@ public class MainActivity extends FragmentActivity implements OnClickListener , 
 	// 自增int
 	private AtomicInteger what = new AtomicInteger(0);
 
-	// Fragment_pagerView control
-	// 三个textview
-	private TextView tab1Tv , tab2Tv , tab3Tv;
-	// 指示器
-	private ImageView cursorImg;
-	// viewpager
-	private ViewPager viewPager;
-	// fragment对象集合
-	ArrayList < Fragment > fragmentsList;
-	// 记录当前选中的tab的index
-	int currentIndex = 0;
-	// 指示器的偏移量
-	private int offset = 0;
-	// 左margin
-	int leftMargin = 0;
-	// 屏幕宽度
-	private int screenWidth = 0;
-	// 屏幕宽度的三分之一
-	private int screen1_3;
-	//
-	private LinearLayout.LayoutParams lp;
+	private FragmentTabHost mTabHost;
+	private RadioGroup mTabRg;
+
+	@SuppressWarnings("rawtypes")
+	private final Class [] fragments =
+	{ Tab1Fragment.class, Tab2Fragment.class, Tab3Fragment.class};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_third);
+		setContentView(R.layout.activity_main);
 
 		initViewPager_top();
 		initDots();
 		loopPlay();
 
-		initMiddle();
+		initEnd();
+
 		MobclickAgent.openActivityDurationTrack(false);
 	}
 
-	/**
-	 * 初始化操作
-	 */
-	private void initMiddle()
+	private void initEnd()
 	{
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		screenWidth = dm.widthPixels;
-		screen1_3 = screenWidth / 3;
-
-		cursorImg = (ImageView) findViewById(R.id.cursor);
-		lp = (LayoutParams) cursorImg.getLayoutParams();
-		leftMargin = lp.leftMargin;
-
-		tab1Tv = (TextView) findViewById(R.id.tab1_tv);
-		tab2Tv = (TextView) findViewById(R.id.tab2_tv);
-		tab3Tv = (TextView) findViewById(R.id.tab3_tv);
-
-		tab1Tv.setOnClickListener(this);
-		tab2Tv.setOnClickListener(this);
-		tab3Tv.setOnClickListener(this);
-
-		initViewPager_middle();
-
-	}
-
-	/**
-	 * 初始化viewpager
-	 */
-	@SuppressLint("InflateParams")
-	@SuppressWarnings("deprecation")
-	private void initViewPager_middle()
-	{
-		viewPager = (ViewPager) findViewById(R.id.third_vp);
-
-		fragmentsList = new ArrayList < Fragment >();
-
-		Fragment fragment1 = new Tab1Fragment();
-		fragmentsList.add(fragment1);
-
-		Fragment fragment2 = new Tab2Fragment();
-		fragmentsList.add(fragment2);
-
-		Fragment fragment3 = new Tab3Fragment();
-		fragmentsList.add(fragment3);
-
-		viewPager.setAdapter(new MyFragmentAdapter(getSupportFragmentManager() , fragmentsList));
-		viewPager.setCurrentItem(0);
-//		viewPager.setOffscreenPageLimit(3);
-		viewPager.setOnPageChangeListener(this);
-	}
-
-	@Override
-	public void onPageScrolled(int position , float positionOffset , int positionOffsetPixels )
-	{
-		offset = (screen1_3 - cursorImg.getLayoutParams().width) / 2;
-		if(position == 0)
-		{// 0<->1
-			lp.leftMargin = (int) (positionOffsetPixels / 3) + offset;
-		}
-		else
-			if(position == 1)
-			{// 1<->2
-				lp.leftMargin = (int) (positionOffsetPixels / 3) + screen1_3 + offset;
-			}
-			else
-			{
-				
-			}
-		cursorImg.setLayoutParams(lp);
-//		Log.d("LOG" , "currentIndex: " + currentIndex + "\tposition: " +  position);
-		currentIndex = position;
-
-	}
-
-	@Override
-	public void onClick(View v )
-	{
-		switch(v.getId())
+		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+		mTabHost.setup(this ,getSupportFragmentManager() ,R.id.realtabcontent);
+		// 得到fragment的个数
+		int count = fragments.length;
+		for(int i = 0 ; i < count ; i ++ )
 		{
-			case R.id.tab1_tv:
-				viewPager.setCurrentItem(0);
-				break;
-			case R.id.tab2_tv:
-				viewPager.setCurrentItem(1);
-				break;
-			case R.id.tab3_tv:
-				viewPager.setCurrentItem(2);
-				break;
+			// 为每一个Tab按钮设置图标、文字和内容
+			TabSpec tabSpec = mTabHost.newTabSpec(i + "").setIndicator(i + "");
+			// 将Tab按钮添加进Tab选项卡中
+			mTabHost.addTab(tabSpec ,fragments[i] ,null);
 		}
-	}
+		mTabRg = (RadioGroup) findViewById(R.id.tab_rg_menu);
+		mTabRg.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
 
-	@Override
-	public void onPageScrollStateChanged(int arg0 )
-	{
-	}
+			@Override
+			public void onCheckedChanged(RadioGroup group , int checkedId )
+			{
+				switch(checkedId)
+				{
+					case R.id.tab_rb_1:
+						mTabHost.setCurrentTab(0);
+						break;
 
-	@Override
-	public void onPageSelected(int arg0 )
-	{
+					case R.id.tab_rb_2:
+						mTabHost.setCurrentTab(1);
+						break;
+
+					case R.id.tab_rb_3:
+						mTabHost.setCurrentTab(2);
+						break;
+
+					default:
+						break;
+				}
+			}
+		});
+
+		mTabHost.setCurrentTab(0);
 	}
 
 	@SuppressLint("InflateParams")

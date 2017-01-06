@@ -3,9 +3,24 @@
     tools:context="com.runcom.wgcwgc.audio.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/play_audio_start"
+        android:icon="@drawable/locale_play_media_play"
+        android:onClick="record"
+        android:showAsAction="ifRoom"
+        android:title="@string/main_audio_record_start"/>
+    
+    <item
+        android:id="@+id/play_audio_paly"
+        android:icon="@drawable/locale_play_media_pause"
+        android:onClick="record"
+        android:showAsAction="always"
+        android:title="@string/main_audio_record_play"/>
+    
+    <item
+        android:id="@+id/play_audio_share"
+        android:icon="@drawable/record_share"
+        android:onClick="record"
+        android:showAsAction="always"
+        android:title="@string/main_audio_record_share"/>
 
 </menu>
