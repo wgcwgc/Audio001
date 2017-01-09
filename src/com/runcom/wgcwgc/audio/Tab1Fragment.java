@@ -51,7 +51,8 @@ public class Tab1Fragment extends Fragment
 	ArrayList < MyAudio > audioList01 = new ArrayList < MyAudio >();
 	MyListViewAdapter adapter;
 	private View rootView;
-//	private boolean flag = true;
+
+	// private boolean flag = true;
 	@Override
 	public void onCreate(Bundle savedInstanceState )
 	{
@@ -98,11 +99,10 @@ public class Tab1Fragment extends Fragment
 		// myAudio.setSource("1");
 		// audioList01.add(myAudio);
 		// }
-
+		new GetThread_getList1().start();
 		adapter = new MyListViewAdapter(inflater , audioList01);
 		listView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
-		new GetThread_getList1().start();
 
 		listView.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -110,14 +110,16 @@ public class Tab1Fragment extends Fragment
 			@Override
 			public void onItemClick(AdapterView < ? > arg0 , View arg1 , int arg2 , long arg3 )
 			{
-//				System.out.println(flag);
-//				Log.d("LOG" , flag + "item");
-//				if(flag)
-//                {
-//					Toast.makeText(getContext() ,"您单击了" + audioList01.get(arg2).getName().toString() ,Toast.LENGTH_SHORT).show();
-//                }
-//				else
-//					flag = true;
+				// System.out.println(flag);
+				// Log.d("LOG" , flag + "item");
+				// if(flag)
+				// {
+				// Toast.makeText(getContext() ,"您单击了" +
+				// audioList01.get(arg2).getName().toString()
+				// ,Toast.LENGTH_SHORT).show();
+				// }
+				// else
+				// flag = true;
 				Toast.makeText(getContext() ,"您单击了" + audioList01.get(arg2).getName().toString() ,Toast.LENGTH_SHORT).show();
 			}
 
@@ -140,15 +142,16 @@ public class Tab1Fragment extends Fragment
 			@Override
 			public void onSwipeStart(int arg0 )
 			{
-//				flag = false;
+				// flag = false;
 			}
 
 			@Override
 			public void onSwipeEnd(int arg0 )
 			{
-//				Toast.makeText(getContext() ,"arg0: " + arg0 + "onSwipeEnd..." ,Toast.LENGTH_SHORT).show();
-//				flag = true;
-//				Log.d("LOG" , flag + "End");
+				// Toast.makeText(getContext() ,"arg0: " + arg0 +
+				// "onSwipeEnd..." ,Toast.LENGTH_SHORT).show();
+				// flag = true;
+				// Log.d("LOG" , flag + "End");
 			}
 		});
 
@@ -165,14 +168,14 @@ public class Tab1Fragment extends Fragment
 				openItem.setTitleColor(Color.BLACK);
 				menu.addMenuItem(openItem);
 
-				SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xA9 ,0xA9 ,0xEF)));
-				deleteItem.setWidth(dp2px(90));
-				deleteItem.setTitle("Delete");
-				deleteItem.setTitleSize(18);
-				deleteItem.setTitleColor(Color.BLACK);
-				menu.addMenuItem(deleteItem);
-				
+//				SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
+//				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xA9 ,0xA9 ,0xEF)));
+//				deleteItem.setWidth(dp2px(90));
+//				deleteItem.setTitle("Delete");
+//				deleteItem.setTitleSize(18);
+//				deleteItem.setTitleColor(Color.BLACK);
+//				menu.addMenuItem(deleteItem);
+
 				SwipeMenuItem shareItem = new SwipeMenuItem(getContext());
 				shareItem.setBackground(new ColorDrawable(Color.rgb(0xF9 ,0x3F ,0x25)));
 				shareItem.setWidth(dp2px(90));
@@ -206,11 +209,11 @@ public class Tab1Fragment extends Fragment
 						open_intent.putExtra("lyric" ,lyric);
 						getContext().startActivity(open_intent);
 						break;
-					case 1:
-						Toast.makeText(getContext() ,"正在删除" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
-						
-						break;
 					case 2:
+						Toast.makeText(getContext() ,"正在删除" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
+
+						break;
+					case 1:
 						Toast.makeText(getContext() ,"正在分享" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
 						Intent share_intent = new Intent(Intent.ACTION_SEND);
 						share_intent.setType("text/*");
@@ -296,6 +299,10 @@ public class Tab1Fragment extends Fragment
 	public void onResume()
 	{
 		super.onResume();
+
+		// new GetThread_getList1().start();
+		// adapter.notifyDataSetChanged();
+
 		MobclickAgent.onPageStart("Tab1Fragment");
 	}
 
