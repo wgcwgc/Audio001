@@ -166,13 +166,14 @@ public class Tab3Fragment extends Fragment
 				openItem.setTitleColor(Color.BLACK);
 				menu.addMenuItem(openItem);
 
-//				SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
-//				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xA9 ,0xA9 ,0xEF)));
-//				deleteItem.setWidth(dp2px(90));
-//				deleteItem.setTitle("Delete");
-//				deleteItem.setTitleSize(18);
-//				deleteItem.setTitleColor(Color.BLACK);
-//				menu.addMenuItem(deleteItem);
+				// SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
+				// deleteItem.setBackground(new ColorDrawable(Color.rgb(0xA9
+				// ,0xA9 ,0xEF)));
+				// deleteItem.setWidth(dp2px(90));
+				// deleteItem.setTitle("Delete");
+				// deleteItem.setTitleSize(18);
+				// deleteItem.setTitleColor(Color.BLACK);
+				// menu.addMenuItem(deleteItem);
 
 				SwipeMenuItem shareItem = new SwipeMenuItem(getContext());
 				shareItem.setBackground(new ColorDrawable(Color.rgb(0xF9 ,0x3F ,0x25)));
@@ -208,10 +209,6 @@ public class Tab3Fragment extends Fragment
 						open_intent.putExtra("lyric" ,lyric);
 						getContext().startActivity(open_intent);
 						break;
-					case 2:
-						Toast.makeText(getContext() ,"正在删除" + audioList03.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
-
-						break;
 					case 1:
 						Toast.makeText(getContext() ,"正在分享" + audioList03.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
 						Intent share_intent = new Intent(Intent.ACTION_SEND);
@@ -221,6 +218,10 @@ public class Tab3Fragment extends Fragment
 						share_intent.putExtra(Intent.EXTRA_TEXT ,url);
 						share_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						getContext().startActivity(Intent.createChooser(share_intent ,"分享"));
+						break;
+					case 2:
+						Toast.makeText(getContext() ,"正在删除" + audioList03.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
+
 						break;
 				}
 				return false;

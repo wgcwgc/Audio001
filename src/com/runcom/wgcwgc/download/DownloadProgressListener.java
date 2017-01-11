@@ -1,4 +1,4 @@
-package com.runcom.wgcwgc.audioDownload;
+package com.runcom.wgcwgc.download;
 
 public interface DownloadProgressListener {
 	public void onDownloadSize(int size);

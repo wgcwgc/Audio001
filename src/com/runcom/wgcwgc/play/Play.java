@@ -62,7 +62,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private ExecutorService es = Executors.newSingleThreadExecutor();
 
 	private Intent intent;
-	private String source , lyricsPath;
+	private String source , lyricsPath , name ;
 
 	// ∏Ë¥ ¥¶¿Ì
 	private LrcRead mLrcRead;
@@ -81,7 +81,9 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		intent = getIntent();
 		source = intent.getStringExtra("source");
 		lyricsPath = intent.getStringExtra("lyric");
-		lyricsPath = Util.lyricsPath + "Õı∑∆_∫Ï∂π.lrc";//  defaultLyric.lrc
+		name = intent.getStringExtra("name");
+//		lyricsPath = Util.lyricsPath + "Õı∑∆_∫Ï∂π.lrc";//  defaultLyric.lrc
+		lyricsPath = Util.lyricsPath + lyricsPath.substring(lyricsPath.lastIndexOf("/"));
 		//TODO handle lyrics 
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(false);
@@ -227,7 +229,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 				mp.start();
 				initSeekBar();
 				es.execute(this);
-				tv_showName.setText(play_list.get(currIndex));
+				tv_showName.setText(name);
 				btnPlay.setImageResource(R.drawable.play_start);
 				currState = PAUSE;
 			}

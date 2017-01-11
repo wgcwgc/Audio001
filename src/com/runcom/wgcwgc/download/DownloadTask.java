@@ -1,4 +1,4 @@
-package com.runcom.wgcwgc.audioDownload;
+package com.runcom.wgcwgc.download;
 
 import java.io.File;
 
@@ -12,6 +12,7 @@ public final class DownloadTask implements Runnable
 	private File saveDir;
 	private FileDownloader loader;
 	private Context context;
+	@SuppressWarnings("unused")
 	private Handler handler;
 	private String filename;
 
@@ -22,6 +23,14 @@ public final class DownloadTask implements Runnable
 		this.path = path;
 		this.saveDir = saveDir;
 		this.context = context;
+	}
+
+	public DownloadTask(Context context , String path , File saveDir)
+	{
+		this.context = context;
+		this.path = path;
+		this.saveDir = saveDir;
+
 	}
 
 	/**
@@ -43,7 +52,7 @@ public final class DownloadTask implements Runnable
 			{
 				msg.what = 1;
 				msg.getData().putString("filename" ,filename);
-				handler.sendMessage(msg);
+				// handler.sendMessage(msg);
 			}
 		}
 	};
@@ -57,7 +66,7 @@ public final class DownloadTask implements Runnable
 		}
 		catch(Exception e)
 		{
-			handler.sendMessage(handler.obtainMessage( -1)); // 发送一条空消息对象
+			// handler.sendMessage(handler.obtainMessage( -1)); // 发送一条空消息对象
 		}
 	}
 }

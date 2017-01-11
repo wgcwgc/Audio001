@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
-import com.runcom.wgcwgc.audioDownload.DownloadTask;
+import com.runcom.wgcwgc.download.DownloadTask;
 import com.runcom.wgcwgc.util.NetUtil;
 import com.runcom.wgcwgc.util.Util;
 

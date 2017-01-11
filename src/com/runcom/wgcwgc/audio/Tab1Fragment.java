@@ -36,6 +36,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.MyAudio;
+import com.runcom.wgcwgc.download.LrcFileDownloader;
 import com.runcom.wgcwgc.play.Play;
 import com.runcom.wgcwgc.util.NetUtil;
 import com.runcom.wgcwgc.web.SSLSocketFactoryEx;
@@ -45,7 +46,7 @@ import com.umeng.analytics.MobclickAgent;
 public class Tab1Fragment extends Fragment
 {
 
-	String audio , lyric;
+	String audio , lyric , name;
 	private SwipeMenuListView listView;
 	MyAudio myAudio = new MyAudio();
 	ArrayList < MyAudio > audioList01 = new ArrayList < MyAudio >();
@@ -168,13 +169,14 @@ public class Tab1Fragment extends Fragment
 				openItem.setTitleColor(Color.BLACK);
 				menu.addMenuItem(openItem);
 
-//				SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
-//				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xA9 ,0xA9 ,0xEF)));
-//				deleteItem.setWidth(dp2px(90));
-//				deleteItem.setTitle("Delete");
-//				deleteItem.setTitleSize(18);
-//				deleteItem.setTitleColor(Color.BLACK);
-//				menu.addMenuItem(deleteItem);
+				// SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
+				// deleteItem.setBackground(new ColorDrawable(Color.rgb(0xA9
+				// ,0xA9 ,0xEF)));
+				// deleteItem.setWidth(dp2px(90));
+				// deleteItem.setTitle("Delete");
+				// deleteItem.setTitleSize(18);
+				// deleteItem.setTitleColor(Color.BLACK);
+				// menu.addMenuItem(deleteItem);
 
 				SwipeMenuItem shareItem = new SwipeMenuItem(getContext());
 				shareItem.setBackground(new ColorDrawable(Color.rgb(0xF9 ,0x3F ,0x25)));
@@ -204,14 +206,12 @@ public class Tab1Fragment extends Fragment
 						// 光辉岁月.mp3
 						open_intent.putExtra("source" ,source);
 						String lyric = audioList01.get(position).getLyric();
-						Log.d("LOG" ,"audio: " + source + "\nlyric: " + lyric);
 						// lyric = "http://abv.cn/music/王菲_红豆.lrc";
 						open_intent.putExtra("lyric" ,lyric);
+						String name = audioList01.get(position).getName();
+						open_intent.putExtra("name" ,name);
+						Log.d("LOG" ,"audio: " + source + "\nlyric: " + lyric + "\nname: " + name);
 						getContext().startActivity(open_intent);
-						break;
-					case 2:
-						Toast.makeText(getContext() ,"正在删除" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
-
 						break;
 					case 1:
 						Toast.makeText(getContext() ,"正在分享" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
@@ -222,6 +222,10 @@ public class Tab1Fragment extends Fragment
 						share_intent.putExtra(Intent.EXTRA_TEXT ,url);
 						share_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						getContext().startActivity(Intent.createChooser(share_intent ,"分享"));
+						break;
+					case 2:
+						Toast.makeText(getContext() ,"正在删除" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
+
 						break;
 				}
 				return false;
@@ -276,13 +280,18 @@ public class Tab1Fragment extends Fragment
 					JSONObject jsonObject = new JSONObject(returnLine);
 					audio = jsonObject.getString("audio");
 					lyric = jsonObject.getString("lyric");
+					name = jsonObject.getString("name");
 					audioList01.clear();
-					for(int i = 0 ; i < 17 ; i ++ )
+					for(int i = 1 ; i < 9 ; i ++ )
 					{
 						myAudio = new MyAudio();
+						lyric = lyric.substring(0 ,lyric.lastIndexOf("/")) + "/00" + i + ".lrc";
 						myAudio.setLyric(lyric);
-						myAudio.setName(audio.substring(audio.lastIndexOf("/") + 1 ,audio.lastIndexOf(".")) + "_" + i);
-						myAudio.setSource(audio);
+						// new Thread(new DownloadTask(getContext() , lyric ,
+						// new File(Util.lyricsPath))).start();
+						new LrcFileDownloader(lyric).start();
+						myAudio.setName(name + i);
+						myAudio.setSource(audio.substring(0 ,audio.lastIndexOf("/")) + "/00" + i + ".mp3");
 						audioList01.add(myAudio);
 					}
 				}
