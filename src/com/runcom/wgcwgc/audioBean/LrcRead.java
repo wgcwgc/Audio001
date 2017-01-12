@@ -13,13 +13,14 @@ public class LrcRead
 {
 	private List < LyricContent > LyricList;
 	private LyricContent mLyricContent;
+
 	public LrcRead()
 	{
 		mLyricContent = new LyricContent();
 		LyricList = new ArrayList < LyricContent >();
 	}
 
-	public void Read(String file ) throws FileNotFoundException , IOException
+	public void Read(String file , int flag ) throws FileNotFoundException , IOException
 	{
 		String Lrc_data = "";
 		File mFile = new File(file);
@@ -34,6 +35,30 @@ public class LrcRead
 			String splitLrc_data[] = Lrc_data.split("@");
 			if(splitLrc_data.length > 1)
 			{
+				String reg = "[\u4e00-\u9fa5]";
+				int code_index = -1;
+				if(splitLrc_data[1].matches(".*" + reg + ".*"))
+				{
+					code_index = splitLrc_data[1].split(reg)[0].length();
+				}
+
+				if(0 == flag)
+				{
+					if(code_index != -1)
+						splitLrc_data[1] = splitLrc_data[1].substring(0 ,code_index);
+//					else
+//						splitLrc_data[1] = splitLrc_data[1].substring(0);
+				}
+				else
+					if(1 == flag)
+					{
+						splitLrc_data[1] = splitLrc_data[1].substring(code_index);
+					}
+					else
+						if(2 == flag)
+						{
+							splitLrc_data[1] = splitLrc_data[1].substring(0 ,code_index) + "\n" + splitLrc_data[1].substring(code_index);
+						}
 				mLyricContent.setLyric(splitLrc_data[1]);
 				int LyricTime = TimeStr(splitLrc_data[0]);
 				mLyricContent.setLyricTime(LyricTime);

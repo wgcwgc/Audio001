@@ -43,20 +43,30 @@ public class LrcFileDownloader extends Thread
 
 				// 获得网络字节输入流对象
 				InputStream is = conn.getInputStream();// 不是操作文件的吗
-
-				// 建立内存到硬盘的连接
-				fos = new FileOutputStream(new File(Util.lyricsPath + lyric.substring(lyric.lastIndexOf("/")) + 1));
-
-				// 老三样 写文件
-				byte [] b = new byte [1024];
-				int len = 0;
-				while((len = is.read(b)) != -1)
-				{ // 先读到内存
-					fos.write(b ,0 ,len);
+				File saveFilePath = new File(Util.lyricsPath + lyric.substring(lyric.lastIndexOf("/") + 1));
+				Log.d("LOG" ,"1:" + saveFilePath.toString());
+				if(!saveFilePath.getParentFile().exists())
+				{
+					saveFilePath.getParentFile().mkdirs();
 				}
-				fos.flush();
-				// System.out.println("下载成功");
-				Log.d("" ,lyric + "下载成功");
+				if( !saveFilePath.exists())
+				{
+					// 建立内存到硬盘的连接
+					fos = new FileOutputStream(saveFilePath);
+					Log.d("LOG" ,"2: " + saveFilePath.toString());
+					// 老三样 写文件
+					byte [] b = new byte [1024];
+					int len = 0;
+					while((len = is.read(b)) != -1)
+					{ // 先读到内存
+						fos.write(b ,0 ,len);
+					}
+					fos.flush();
+					// System.out.println("下载成功");
+					Log.d("LOG" ,lyric + "下载成功");
+
+				}
+
 			}
 
 		}

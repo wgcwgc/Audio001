@@ -218,14 +218,14 @@ public class Tab1Fragment extends Fragment
 						Intent share_intent = new Intent(Intent.ACTION_SEND);
 						share_intent.setType("text/*");
 						share_intent.putExtra(Intent.EXTRA_SUBJECT ,"Share");
-						String url = ("www.baidu.com").toString();
+						String url = (audioList01.get(position).getSource().toString()).toString();
 						share_intent.putExtra(Intent.EXTRA_TEXT ,url);
 						share_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						getContext().startActivity(Intent.createChooser(share_intent ,"·ÖÏí"));
 						break;
 					case 2:
 						Toast.makeText(getContext() ,"ÕýÔÚÉ¾³ý" + audioList01.get(position).getName().toString() + "..." ,Toast.LENGTH_SHORT).show();
-
+						
 						break;
 				}
 				return false;

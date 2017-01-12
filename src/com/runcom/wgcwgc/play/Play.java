@@ -71,7 +71,8 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private int CurrentTime = 0;
 	private int CountTime = 0;
 	private List < LyricContent > LyricList = new ArrayList < LyricContent >();
-
+	
+	private int flag = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{
@@ -84,7 +85,6 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		name = intent.getStringExtra("name");
 //		lyricsPath = Util.lyricsPath + "Íõ·Æ_ºì¶¹.lrc";//  defaultLyric.lrc
 		lyricsPath = Util.lyricsPath + lyricsPath.substring(lyricsPath.lastIndexOf("/"));
-		//TODO handle lyrics 
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(false);
 		actionbar.setDisplayShowHomeEnabled(true);
@@ -108,7 +108,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		{
 			if(new File(lyricsPath).exists())
 			{
-				mLrcRead.Read(lyricsPath);
+				mLrcRead.Read(lyricsPath , flag);
 			}
 			else
 			{
@@ -124,7 +124,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 					bufferedWriter.flush();
 					bufferedWriter.close();
 				}
-				mLrcRead.Read(defaultLyricPath);
+				mLrcRead.Read(defaultLyricPath , flag);
 			}
 		}
 		catch(Exception e)
