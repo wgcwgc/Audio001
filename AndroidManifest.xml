@@ -67,6 +67,11 @@
             android:icon="@drawable/ic_come_back"
             android:parentActivityName="com.runcom.wgcwgc.audio.MainActivity" >
         </activity>
+        <activity
+            android:name="com.runcom.wgcwgc.setting.PlaySetting"
+            android:icon="@drawable/ic_come_back"
+            android:parentActivityName="com.runcom.wgcwgc.audio.MainActivity" >
+        </activity>
     </application>
 
 </manifest>

@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.play.PlayLocaleAudio;
 import com.runcom.wgcwgc.record.MyRecord;
+import com.runcom.wgcwgc.setting.PlaySetting;
 import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("HandlerLeak")
@@ -53,7 +54,7 @@ public class MainActivity01 extends FragmentActivity
 
 	@SuppressWarnings("rawtypes")
 	private final Class [] fragments =
-	{ Tab1Fragment.class, Tab2Fragment.class, Tab3Fragment.class};
+	{ Tab1Fragment.class, Tab2Fragment.class, Tab3Fragment.class };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
@@ -300,6 +301,10 @@ public class MainActivity01 extends FragmentActivity
 
 			case R.id.item_playLocalAudio:
 				startActivity(new Intent(this , PlayLocaleAudio.class));
+				break;
+
+			case R.id.item_playSetting:
+				startActivity(new Intent(this , PlaySetting.class));
 				break;
 
 		}

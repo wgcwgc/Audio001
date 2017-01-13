@@ -37,6 +37,7 @@ import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.LrcRead;
 import com.runcom.wgcwgc.audioBean.LyricContent;
 import com.runcom.wgcwgc.audioBean.LyricView;
+import com.runcom.wgcwgc.setting.PlaySetting;
 import com.runcom.wgcwgc.util.Util;
 import com.umeng.analytics.MobclickAgent;
 
@@ -72,7 +73,8 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private int CountTime = 0;
 	private List < LyricContent > LyricList = new ArrayList < LyricContent >();
 	
-	private int flag = 0;
+	private int flag = new PlaySetting().flag;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{

@@ -13,6 +13,7 @@
     <string name="clear_music_list">清除播放列表</string>
     <string name="recorder">录音</string>
     <string name="playLocalAudio">播放本地音频</string>
+    <string name="playSetting">设置</string>    
     <string name="exit">退出</string>
 
     <!-- app_recorder interface -->

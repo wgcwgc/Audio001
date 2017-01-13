@@ -22,5 +22,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="translate">#00000000</color>
     <color name="white">#ffffff</color>
+    
+    <!-- setting activity -->
+    <color name="subtitle">#86AA39</color>
+    
 
 </resources>
