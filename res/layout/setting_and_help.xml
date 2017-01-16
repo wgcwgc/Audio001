@@ -35,7 +35,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="99dp"
                 android:layout_weight="0.0"
-                android:background="@drawable/more_item_press"
+                android:background="@drawable/setting_background"
                 android:orientation="vertical"
                 android:paddingEnd="10.0dip"
                 android:paddingLeft="10.0dip"
@@ -46,7 +46,7 @@
                     android:id="@+id/EnglishSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="true"
+                    android:checked="false"
                     android:text="仅显示英文" />
 
                 <Switch
@@ -91,14 +91,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="8.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_me_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_me"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -108,12 +109,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_me_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -146,14 +148,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_account_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_account"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -163,12 +166,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_account_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
 
                     <TableRow
@@ -176,14 +180,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_mark_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_mark"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -193,12 +198,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_mark_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
 
                     <TableRow
@@ -206,14 +212,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_log_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_log"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -223,12 +230,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_log_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -261,14 +269,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_clearCache_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_clearcache"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -278,12 +287,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_clearCache_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
 
                     <TableRow
@@ -291,14 +301,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_opinion_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_opinion"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -308,12 +319,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_opinion_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
 
                     <TableRow
@@ -321,14 +333,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_checkUpdate_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_checkupdate"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -338,12 +351,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_checkUpdate_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
 
                     <TableRow
@@ -351,14 +365,15 @@
                         android:layout_width="fill_parent"
                         android:layout_marginLeft="2.0dip"
                         android:layout_marginRight="2.0dip"
-                        android:background="@drawable/more_item_press"
+                        android:background="@drawable/setting_background"
                         android:paddingBottom="16.0dip"
                         android:paddingTop="16.0dip" >
 
                         <TextView
+                            android:id="@+id/setting_aboutUs_textView"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:drawableLeft="@drawable/ic_launcher00"
+                            android:drawableLeft="@drawable/setting_aboutus"
                             android:drawablePadding="10.0dip"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -368,12 +383,13 @@
                             android:textSize="16.0sp" />
 
                         <ImageView
+                            android:id="@+id/setting_aboutUs_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:layout_gravity="right"
                             android:gravity="center_vertical"
                             android:paddingRight="20.0dip"
-                            android:src="@drawable/ic_launcher00" />
+                            android:src="@drawable/setting_detail" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>

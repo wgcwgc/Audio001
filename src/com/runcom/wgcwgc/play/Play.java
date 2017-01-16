@@ -37,7 +37,7 @@ import com.runcom.wgcwgc.audio01.R;
 import com.runcom.wgcwgc.audioBean.LrcRead;
 import com.runcom.wgcwgc.audioBean.LyricContent;
 import com.runcom.wgcwgc.audioBean.LyricView;
-import com.runcom.wgcwgc.setting.PlaySetting;
+import com.runcom.wgcwgc.storage.MySharedPreferences;
 import com.runcom.wgcwgc.util.Util;
 import com.umeng.analytics.MobclickAgent;
 
@@ -63,7 +63,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private ExecutorService es = Executors.newSingleThreadExecutor();
 
 	private Intent intent;
-	private String source , lyricsPath , name ;
+	private String source , lyricsPath , name;
 
 	// ∏Ë¥ ¥¶¿Ì
 	private LrcRead mLrcRead;
@@ -72,9 +72,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private int CurrentTime = 0;
 	private int CountTime = 0;
 	private List < LyricContent > LyricList = new ArrayList < LyricContent >();
-	
-	private int flag = new PlaySetting().flag;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{
@@ -85,7 +83,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		source = intent.getStringExtra("source");
 		lyricsPath = intent.getStringExtra("lyric");
 		name = intent.getStringExtra("name");
-//		lyricsPath = Util.lyricsPath + "Õı∑∆_∫Ï∂π.lrc";//  defaultLyric.lrc
+		// lyricsPath = Util.lyricsPath + "Õı∑∆_∫Ï∂π.lrc";// defaultLyric.lrc
 		lyricsPath = Util.lyricsPath + lyricsPath.substring(lyricsPath.lastIndexOf("/"));
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(false);
@@ -100,6 +98,12 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 	private void initLyric()
 	{
+		int flag = MySharedPreferences.getValue(getApplicationContext() ,"subtitleShow" ,0);
+		// MySharedPreferences sp = (MySharedPreferences)
+		// context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE);
+		// int value = ((android.content.SharedPreferences) sp).getInt(key
+		// ,defValue);
+
 		new Thread()
 		{
 
@@ -110,7 +114,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		{
 			if(new File(lyricsPath).exists())
 			{
-				mLrcRead.Read(lyricsPath , flag);
+				mLrcRead.Read(lyricsPath ,flag);
 			}
 			else
 			{
@@ -126,7 +130,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 					bufferedWriter.flush();
 					bufferedWriter.close();
 				}
-				mLrcRead.Read(defaultLyricPath , flag);
+				mLrcRead.Read(defaultLyricPath ,flag);
 			}
 		}
 		catch(Exception e)
@@ -197,7 +201,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		mp.setOnBufferingUpdateListener(this);
 		mp.setLooping(true);
 		play_list.add(source);
-		Log.d("LOG" , "source: " + source);
+		Log.d("LOG" ,"source: " + source);
 		initLyric();
 		start();
 	}
@@ -246,10 +250,9 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		}
 	}
 
-	
-	public void record(View view)
+	public void record(View view )
 	{
-		
+
 	}
 
 	// ≤•∑≈∞¥≈•
@@ -359,11 +362,12 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 			mp.seekTo(progress);
 		}
 	}
+
 	@Override
 	public void onBufferingUpdate(MediaPlayer mp , int percent )
 	{
 		seekBar.setSecondaryProgress(percent * mp.getDuration() / 100);
-//		Log.d("LOG" , "percent: " + percent);
+		// Log.d("LOG" , "percent: " + percent);
 	}
 
 	public void onStartTrackingTouch(SeekBar seekBar )
@@ -400,7 +404,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu )
 	{
-//		getMenuInflater().inflate(R.menu.main ,menu);
+		// getMenuInflater().inflate(R.menu.main ,menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -429,7 +433,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		}
 		return super.onKeyDown(keyCode ,event);
 	}
-	
+
 	@Override
 	public void onResume()
 	{
