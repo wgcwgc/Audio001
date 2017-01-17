@@ -10,46 +10,45 @@ import android.content.SharedPreferences.Editor;
  */
 public class MySharedPreferences
 {
-	public final static String SETTING = "Setting";
 
-	public static void putValue(Context context , String key , int value )
+	public static void putValue(Context context , String sharedPreferencesKey , String key , int value )
 	{
-		Editor editor = context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE).edit();
+		Editor editor = context.getSharedPreferences(sharedPreferencesKey ,Context.MODE_PRIVATE).edit();
 		editor.putInt(key ,value);
 		editor.commit();
 	}
 
-	public static void putValue(Context context , String key , boolean value )
+	public static void putValue(Context context , String sharedPreferencesKey , String key , boolean value )
 	{
-		Editor editor = context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE).edit();
+		Editor editor = context.getSharedPreferences(sharedPreferencesKey ,Context.MODE_PRIVATE).edit();
 		editor.putBoolean(key ,value);
 		editor.commit();
 	}
 
-	public static void putValue(Context context , String key , String value )
+	public static void putValue(Context context , String sharedPreferencesKey , String key , String value )
 	{
-		Editor editor = context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE).edit();
+		Editor editor = context.getSharedPreferences(sharedPreferencesKey ,Context.MODE_PRIVATE).edit();
 		editor.putString(key ,value);
 		editor.commit();
 	}
 
-	public static int getValue(Context context , String key , int defValue )
+	public static int getValue(Context context , String sharedPreferencesKey , String key , int defValue )
 	{
-		SharedPreferences sp = context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(sharedPreferencesKey ,Context.MODE_PRIVATE);
 		int value = sp.getInt(key ,defValue);
 		return value;
 	}
 
-	public static boolean getValue(Context context , String key , boolean defValue )
+	public static boolean getValue(Context context , String sharedPreferencesKey , String key , boolean defValue )
 	{
-		SharedPreferences sp = context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(sharedPreferencesKey ,Context.MODE_PRIVATE);
 		boolean value = sp.getBoolean(key ,defValue);
 		return value;
 	}
 
-	public static String getValue(Context context , String key , String defValue )
+	public static String getValue(Context context , String sharedPreferencesKey , String key , String defValue )
 	{
-		SharedPreferences sp = context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(sharedPreferencesKey ,Context.MODE_PRIVATE);
 		String value = sp.getString(key ,defValue);
 		return value;
 	}

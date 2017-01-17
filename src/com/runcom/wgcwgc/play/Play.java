@@ -13,7 +13,9 @@ import java.util.concurrent.Executors;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -73,12 +75,16 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private int CountTime = 0;
 	private List < LyricContent > LyricList = new ArrayList < LyricContent >();
 
+	private final String sharedPreferencesKey = "Setting";
+	private final String sharedPreferencesSubtitleFlag = "subtitleShow";
+
+	private final String TAG = "LOG";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.audio_play);
-
 		intent = getIntent();
 		source = intent.getStringExtra("source");
 		lyricsPath = intent.getStringExtra("lyric");
@@ -98,7 +104,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 	private void initLyric()
 	{
-		int flag = MySharedPreferences.getValue(getApplicationContext() ,"subtitleShow" ,0);
+		int flag = MySharedPreferences.getValue(getApplicationContext() ,sharedPreferencesKey ,sharedPreferencesSubtitleFlag ,0);
 		// MySharedPreferences sp = (MySharedPreferences)
 		// context.getSharedPreferences(SETTING ,Context.MODE_PRIVATE);
 		// int value = ((android.content.SharedPreferences) sp).getInt(key
@@ -417,8 +423,18 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 				mp.stop();
 				onBackPressed();
 				break;
+		// TODO 录音 + 调节音量 + 恢复
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void audio()
+	{
+		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		int current = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		Log.d(TAG ,"MUSIC" + " current : " + current);
+		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,0 ,0);
+		// TODO
 	}
 
 	// 重写按返回键退出播放

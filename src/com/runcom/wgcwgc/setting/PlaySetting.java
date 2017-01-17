@@ -24,6 +24,7 @@ public class PlaySetting extends Activity
 
 	private Switch English_switch , Chinese_switch , All_swith;
 	private int flag = 0;
+	private final String sharedPreferencesKey = "Setting";
 	private final String sharedPreferencesSubtitleFlag = "subtitleShow";
 
 	TextView setting_me_textView , setting_log_textView ,
@@ -53,11 +54,11 @@ public class PlaySetting extends Activity
 		actionbar.setDisplayShowCustomEnabled(true);
 		actionbar.setTitle(" …Ë÷√ ");
 
-		InitSwitch();
+		initSwitch();
 
 	}
 
-	private void InitSwitch()
+	private void initSwitch()
 	{
 		// me
 		setting_me_textView = (TextView) findViewById(R.id.setting_me_textView);
@@ -107,7 +108,7 @@ public class PlaySetting extends Activity
 		Chinese_switch = (Switch) findViewById(R.id.ChineseSwitch);
 		All_swith = (Switch) findViewById(R.id.AllSwitch);
 
-		flag = MySharedPreferences.getValue(getApplicationContext() ,sharedPreferencesSubtitleFlag ,0);
+		flag = MySharedPreferences.getValue(getApplicationContext() ,sharedPreferencesKey ,sharedPreferencesSubtitleFlag ,0);
 		if(1 == flag)
 		{
 			English_switch.setEnabled(false);
@@ -142,7 +143,7 @@ public class PlaySetting extends Activity
 					Chinese_switch.setEnabled(false);
 					All_swith.setEnabled(false);
 					flag = 0;
-					MySharedPreferences.putValue(getApplicationContext() ,sharedPreferencesSubtitleFlag ,flag);
+					MySharedPreferences.putValue(getApplicationContext() ,sharedPreferencesKey ,sharedPreferencesSubtitleFlag ,flag);
 				}
 				else
 				{
@@ -162,7 +163,7 @@ public class PlaySetting extends Activity
 					English_switch.setEnabled(false);
 					All_swith.setEnabled(false);
 					flag = 1;
-					MySharedPreferences.putValue(getApplicationContext() ,sharedPreferencesSubtitleFlag ,flag);
+					MySharedPreferences.putValue(getApplicationContext() ,sharedPreferencesKey ,sharedPreferencesSubtitleFlag ,flag);
 				}
 				else
 				{
@@ -183,7 +184,7 @@ public class PlaySetting extends Activity
 					English_switch.setEnabled(false);
 					Chinese_switch.setEnabled(false);
 					flag = 2;
-					MySharedPreferences.putValue(PlaySetting.this ,"subtitleShow" ,flag);
+					MySharedPreferences.putValue(PlaySetting.this ,sharedPreferencesKey ,"subtitleShow" ,flag);
 				}
 				else
 				{

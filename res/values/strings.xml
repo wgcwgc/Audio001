@@ -12,7 +12,10 @@
     <string name="main_login">登录</string>
     <string name="main_register">注册</string>
     <string name="main_forget_password">忘记密码？</string>
-    <string name="main_Retrieve_account">找回账号！</string>
+    <string name="main_retrieve_account">找回账号！</string>
+    <string name="main_remember_password">记住密码</string>
+    <string name="main_auto_login">自动登录</string>
+    
 
     <!-- app_ViewPager -->
     <string name="main_viewPager_dian">小圆点</string>
