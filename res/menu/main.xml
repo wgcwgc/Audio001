@@ -1,26 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.runcom.wgcwgc.audio.MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <item
         android:id="@+id/play_audio_start"
         android:icon="@drawable/locale_play_media_play"
-        android:onClick="record"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/main_audio_record_start"/>
-    
+    <item
+        android:id="@+id/play_audio_stop"
+        android:icon="@drawable/record_pause"
+        android:showAsAction="never"
+        android:title="@string/main_audio_record_pause"/>
     <item
         android:id="@+id/play_audio_paly"
         android:icon="@drawable/locale_play_media_pause"
-        android:onClick="record"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/main_audio_record_play"/>
-    
     <item
         android:id="@+id/play_audio_share"
         android:icon="@drawable/record_share"
-        android:onClick="record"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/main_audio_record_share"/>
 
 </menu>

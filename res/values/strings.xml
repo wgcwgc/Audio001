@@ -51,6 +51,7 @@
     <string name="main_audio_lyricsShow">找不到匹配的歌词</string>
     <string name="main_audio_record_start">开始</string>
     <string name="main_audio_record_play">停止</string>
+    <string name="main_audio_record_pause">暂停</string>
     <string name="main_audio_record_share">分享</string>
 
 </resources>

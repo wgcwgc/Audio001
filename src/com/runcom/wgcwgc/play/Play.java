@@ -80,6 +80,9 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 	private final String TAG = "LOG";
 
+	// record setting
+	int record_currentVoice = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
 	{
@@ -410,7 +413,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu )
 	{
-		// getMenuInflater().inflate(R.menu.main ,menu);
+		getMenuInflater().inflate(R.menu.main ,menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -423,18 +426,49 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 				mp.stop();
 				onBackPressed();
 				break;
-		// TODO 录音 + 调节音量 + 恢复
+			// TODO 录音 + 调节音量 + 恢复
+			case R.id.play_audio_start:
+				recordStart();
+				break;
+			case R.id.play_audio_stop:
+				recordStop();
+				break;
+			case R.id.play_audio_paly:
+				recordPlay();
+				break;
+			case R.id.play_audio_share:
+				recordShare();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void audio()
+	public void recordStart()
 	{
 		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		int current = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		Log.d(TAG ,"MUSIC" + " current : " + current);
+		record_currentVoice = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,0 ,0);
-		// TODO
+	}
+
+	public void recordStop()
+	{
+		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,record_currentVoice ,0);
+
+	}
+
+	public void recordPlay()
+	{
+		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,record_currentVoice ,0);
+		
+	}
+
+	public void recordShare()
+	{
+		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,record_currentVoice ,0);
+
 	}
 
 	// 重写按返回键退出播放
