@@ -5,6 +5,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,7 +21,7 @@ import com.runcom.wgcwgc.audio01.R;
 public class Recorder extends Activity
 {
 
-	// private MediaRecorder myAutoRecorder;
+	private MediaRecorder myAutoRecorder;
 	private String outputFile = null;
 	private ImageButton start , stop , play , share;
 
@@ -44,59 +45,57 @@ public class Recorder extends Activity
 
 		// System.out.println(outputFile.toString());
 
-		// myAutoRecorder = new MediaRecorder();
-		//
-		// // 从麦克风源进行录音
-		// myAutoRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-		// // 设置输出格式
-		// myAutoRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-		// // 设置编码格式
-		// myAutoRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-		//
-		// myAutoRecorder.setOutputFile(outputFile);
+		myAutoRecorder = new MediaRecorder();
+
+		// 从麦克风源进行录音
+		myAutoRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+		// 设置输出格式
+		myAutoRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+		// 设置编码格式
+		myAutoRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+
+		myAutoRecorder.setOutputFile(outputFile);
 
 	}
 
-	public void stop(View view )
+	public void stop()
 	{
-		// myAutoRecorder.stop();
-		// myAutoRecorder.release();
-		// myAutoRecorder = null;
-		// Toast.makeText(getApplicationContext() ,"Recorded successfully"
-		// ,Toast.LENGTH_LONG).show();
+		myAutoRecorder.stop();
+		myAutoRecorder.release();
+		myAutoRecorder = null;
+		Toast.makeText(getApplicationContext() ,"Recorded successfully" ,Toast.LENGTH_LONG).show();
 
-		Intent stopIntent = new Intent(this , MyService.class);
-		stopService(stopIntent);
+		// Intent stopIntent = new Intent(this , MyService.class);
+		// stopService(stopIntent);
 
 		stop.setEnabled(false);
 		play.setEnabled(true);
 		share.setEnabled(true);
 	}
 
-	public void start(View view )
+	public void start()
 	{
-		// try
-		// {
-		// myAutoRecorder.prepare();
-		// myAutoRecorder.start();
-		// }
-		// catch(Exception e)
-		// {
-		// Log.d("LOG" ,e.toString());
-		// e.printStackTrace();
-		// }
-		// Toast.makeText(getApplicationContext() ,"Recording started"
-		// ,Toast.LENGTH_LONG).show();
+		try
+		{
+			myAutoRecorder.prepare();
+			myAutoRecorder.start();
+		}
+		catch(Exception e)
+		{
+			Log.d("LOG" ,e.toString());
+			e.printStackTrace();
+		}
+		Toast.makeText(getApplicationContext() ,"Recording started" ,Toast.LENGTH_LONG).show();
 
-		Intent startIntent = new Intent(this , MyService.class);
-		startIntent.putExtra("outputFile" ,outputFile);
-		startService(startIntent);
+		// Intent startIntent = new Intent(this , MyService.class);
+		// startIntent.putExtra("outputFile" ,outputFile);
+		// startService(startIntent);
 
 		start.setEnabled(false);
 		stop.setEnabled(true);
 	}
 
-	public void play(View view )
+	public void play()
 	{
 
 		MediaPlayer m = new MediaPlayer();
@@ -114,7 +113,7 @@ public class Recorder extends Activity
 		}
 	}
 
-	public void share(View view )
+	public void share()
 	{
 
 		Intent intent = new Intent(Intent.ACTION_SEND);

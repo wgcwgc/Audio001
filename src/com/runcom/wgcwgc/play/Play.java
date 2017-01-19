@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,6 +21,8 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -78,10 +81,12 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 	private final String sharedPreferencesKey = "Setting";
 	private final String sharedPreferencesSubtitleFlag = "subtitleShow";
 
+	@SuppressWarnings("unused")
 	private final String TAG = "LOG";
-
 	// record setting
 	int record_currentVoice = 0;
+	MediaRecorder myAutoRecorder;
+	String outputFile = Util.audiosPath + new Random(57).toString().substring(17) + ".mp3";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState )
@@ -103,6 +108,15 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		actionbar.setTitle(" 播放 ");
 
 		initPlayView();
+		myAutoRecorder = new MediaRecorder();
+		// 从麦克风源进行录音
+		myAutoRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+		// 设置输出格式
+		myAutoRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+		// 设置编码格式
+		myAutoRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+
+		myAutoRecorder.setOutputFile(outputFile);
 	}
 
 	private void initLyric()
@@ -448,6 +462,21 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		record_currentVoice = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,0 ,0);
+
+		try
+		{
+			myAutoRecorder.prepare();
+			myAutoRecorder.start();
+		}
+		catch(Exception e)
+		{
+			Log.d("LOG" ,e.toString());
+			e.printStackTrace();
+		}
+		Toast.makeText(getApplicationContext() ,"Recording..." ,Toast.LENGTH_LONG).show();
+
+		// MenuItem menuItem = new MenuItem();
+
 	}
 
 	public void recordStop()
@@ -455,13 +484,34 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,record_currentVoice ,0);
 
+		myAutoRecorder.stop();
+		myAutoRecorder.release();
+		myAutoRecorder = null;
+		Toast.makeText(getApplicationContext() ,"Record successfully!!!\n文件保存在:" + outputFile ,Toast.LENGTH_LONG).show();
+
 	}
 
 	public void recordPlay()
 	{
 		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,record_currentVoice ,0);
-		
+		mp.pause();
+		btnPlay.setImageResource(R.drawable.play_pause);
+		currState = START;
+
+		MediaPlayer m = new MediaPlayer();
+		try
+		{
+			m.setDataSource(outputFile);
+			m.prepare();
+			m.start();
+			Toast.makeText(getApplicationContext() ,"Your record is playing." ,Toast.LENGTH_LONG).show();
+		}
+		catch(Exception e)
+		{
+			Log.d("LOG" ,e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	public void recordShare()
@@ -469,6 +519,15 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC ,record_currentVoice ,0);
 
+		Intent intent = new Intent(Intent.ACTION_SEND);
+
+		intent.setType("audio/*");
+		intent.putExtra(Intent.EXTRA_SUBJECT ,"Share");
+		String url = outputFile.toString();
+		Uri uri = Uri.parse(url);
+		intent.putExtra(Intent.EXTRA_STREAM ,uri);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(Intent.createChooser(intent ,"分享"));
 	}
 
 	// 重写按返回键退出播放

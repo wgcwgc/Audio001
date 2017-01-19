@@ -3,23 +3,23 @@
 
     <item
         android:id="@+id/play_audio_start"
-        android:icon="@drawable/locale_play_media_play"
-        android:showAsAction="never"
+        android:icon="@drawable/play_menu_start"
+        android:showAsAction="always"
         android:title="@string/main_audio_record_start"/>
     <item
         android:id="@+id/play_audio_stop"
-        android:icon="@drawable/record_pause"
-        android:showAsAction="never"
-        android:title="@string/main_audio_record_pause"/>
+        android:icon="@drawable/play_menu_stop"
+        android:showAsAction="always"
+        android:title="@string/main_audio_record_stop"/>
     <item
         android:id="@+id/play_audio_paly"
-        android:icon="@drawable/locale_play_media_pause"
-        android:showAsAction="never"
+        android:icon="@drawable/play_menu_play"
+        android:showAsAction="always"
         android:title="@string/main_audio_record_play"/>
     <item
         android:id="@+id/play_audio_share"
-        android:icon="@drawable/record_share"
-        android:showAsAction="never"
+        android:icon="@drawable/play_menu_share"
+        android:showAsAction="always"
         android:title="@string/main_audio_record_share"/>
 
 </menu>
