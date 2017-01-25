@@ -479,6 +479,7 @@ public class Play extends Activity implements Runnable , OnCompletionListener , 
 
 	}
 
+	
 	public void recordStop()
 	{
 		AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
